@@ -315,10 +315,6 @@ The dashboard includes:
 - machine-level operational table
 - descending ranking by failure probability
 
-### Dashboard Preview
-
-![Predictive Maintenance Dashboard](docs/images/predictive-maintenance-dashboard.png)
-
 ## Validated Results
 
 The implementation was validated through the following checks:
