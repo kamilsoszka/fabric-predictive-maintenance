@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Predictive Maintenance Analytics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9f3d34d4-1609-92ca-497a-03843b616ad5"
+  }
+}

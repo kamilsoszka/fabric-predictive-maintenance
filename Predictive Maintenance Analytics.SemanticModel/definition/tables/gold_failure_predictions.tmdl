@@ -1,0 +1,164 @@
+table gold_failure_predictions
+	lineageTag: 0ed3149e-3237-4c64-a966-04d352382af8
+	sourceLineageTag: [dbo].[gold_failure_predictions]
+
+	measure 'Total Machines' =
+			
+			DISTINCTCOUNT(gold_failure_predictions[machine_id])
+		formatString: 0
+		lineageTag: f9c88138-802b-4f29-a543-46d907153392
+
+		changedProperty = Name
+
+	measure 'Predicted Failures' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(gold_failure_predictions[machine_id]),
+			    gold_failure_predictions[predicted_failure_7d] = 1
+			)
+		formatString: 0
+		lineageTag: d7ec1346-a893-4e6f-8089-e8320231c33d
+
+		changedProperty = Name
+
+	measure 'Average Failure Probability' =
+			
+			AVERAGE(gold_failure_predictions[failure_probability])
+		lineageTag: 704424a9-1a84-466a-a199-6b40ea9fb7fd
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'High Risk Machines' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(gold_failure_predictions[machine_id]),
+			    gold_failure_predictions[risk_level] = "HIGH"
+			)
+		formatString: 0
+		lineageTag: 52ae3920-7768-4d3c-b6db-d6323a587249
+
+		changedProperty = Name
+
+	measure 'Predicted Failure Rate' =
+			
+			DIVIDE(
+			    [Predicted Failures],
+			    [Total Machines],
+			    0
+			)
+		lineageTag: cbf63206-38d2-4d8e-9c8d-150bc2f97164
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'High Risk Rate' =
+			
+			DIVIDE(
+			    [High Risk Machines],
+			    [Total Machines],
+			    0
+			)
+		lineageTag: 3b846e68-6ded-4c91-bae4-0304f45e1942
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column machine_id
+		dataType: string
+		lineageTag: 34dcba5d-3f23-446c-811a-f9ef2eb0dbe3
+		sourceLineageTag: machine_id
+		summarizeBy: none
+		sourceColumn: machine_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column feature_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 93219c3b-c7d2-45bf-8cc0-7bc343bf69df
+		sourceLineageTag: feature_date
+		summarizeBy: none
+		sourceColumn: feature_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column failure_probability
+		dataType: double
+		lineageTag: 013c5100-c33f-4631-99b9-1fe7af58b311
+		sourceLineageTag: failure_probability
+		summarizeBy: none
+		sourceColumn: failure_probability
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column predicted_failure_7d
+		dataType: int64
+		formatString: 0
+		lineageTag: 86ae09c7-df8b-4e37-9aa2-6a358adee509
+		sourceLineageTag: predicted_failure_7d
+		summarizeBy: none
+		sourceColumn: predicted_failure_7d
+
+		annotation SummarizationSetBy = Automatic
+
+	column risk_level
+		dataType: string
+		lineageTag: 867b3d05-e7f1-4ea3-95d1-31f94fc38e3a
+		sourceLineageTag: risk_level
+		summarizeBy: none
+		sourceColumn: risk_level
+
+		annotation SummarizationSetBy = Automatic
+
+	column model_name
+		dataType: string
+		lineageTag: bc7b12ee-43b3-414d-9293-67654a1aaf6b
+		sourceLineageTag: model_name
+		summarizeBy: none
+		sourceColumn: model_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column model_version
+		dataType: string
+		lineageTag: 25acbdea-f72f-46b6-9296-05c7647fc7aa
+		sourceLineageTag: model_version
+		summarizeBy: none
+		sourceColumn: model_version
+
+		annotation SummarizationSetBy = Automatic
+
+	column decision_threshold
+		dataType: double
+		lineageTag: 700411b4-db64-4a85-a043-111caae6fd97
+		sourceLineageTag: decision_threshold
+		summarizeBy: none
+		sourceColumn: decision_threshold
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column prediction_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 4436590a-213f-4da5-83b5-0436044a71dc
+		sourceLineageTag: prediction_timestamp
+		summarizeBy: none
+		sourceColumn: prediction_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gold_failure_predictions = entity
+		mode: directLake
+		source
+			entityName: gold_failure_predictions
+			schemaName: dbo
+			expressionSource: 'DirectLake - lh_predictive_maintenance'
+

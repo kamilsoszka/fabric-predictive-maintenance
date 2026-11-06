@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "MLExperiment",
+    "displayName": "03_model_training",
+    "description": ""
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "dc1ded19-5230-abad-4385-5672215e91a1"
+  }
+}

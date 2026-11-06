@@ -1,0 +1,246 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "b2540045072b2017b5e9",
+  "position": {
+    "x": 15.957888904280372,
+    "y": 146.81257791937941,
+    "z": 8000,
+    "height": 561.71768943066911,
+    "width": 456.71479992034909,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_failure_predictions"
+                    }
+                  },
+                  "Property": "machine_id"
+                }
+              },
+              "queryRef": "gold_failure_predictions.machine_id",
+              "nativeQueryRef": "machine_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_failure_predictions"
+                    }
+                  },
+                  "Property": "failure_probability"
+                }
+              },
+              "queryRef": "gold_failure_predictions.failure_probability",
+              "nativeQueryRef": "failure_probability",
+              "format": "0.00 %;-0.00 %;0.00 %"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_failure_predictions"
+                    }
+                  },
+                  "Property": "risk_level"
+                }
+              },
+              "queryRef": "gold_failure_predictions.risk_level",
+              "nativeQueryRef": "risk_level"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_failure_predictions"
+                    }
+                  },
+                  "Property": "predicted_failure_7d"
+                }
+              },
+              "queryRef": "gold_failure_predictions.predicted_failure_7d",
+              "nativeQueryRef": "predicted_failure_7d",
+              "format": "0 %;-0 %;0 %"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold_failure_predictions"
+                  }
+                },
+                "Property": "failure_probability"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'fixedWidth'"
+                }
+              }
+            },
+            "defaultColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "81D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_failure_predictions.machine_id"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "122D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_failure_predictions.failure_probability"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "66D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_failure_predictions.risk_level"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "136D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold_failure_predictions.predicted_failure_7d"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "0aeeb55d7d130300adca",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_failure_predictions"
+              }
+            },
+            "Property": "machine_id"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "837c45c69aa7bb25dd12",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_failure_predictions"
+              }
+            },
+            "Property": "failure_probability"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "be5edc101447e1b47057",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_failure_predictions"
+              }
+            },
+            "Property": "risk_level"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b5dd0691a0a240534d20",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_failure_predictions"
+              }
+            },
+            "Property": "predicted_failure_7d"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

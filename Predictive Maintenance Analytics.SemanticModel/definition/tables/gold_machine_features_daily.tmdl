@@ -1,0 +1,315 @@
+table gold_machine_features_daily
+	lineageTag: 2cbae43f-df60-4998-b7af-3e53df6f7cb3
+	sourceLineageTag: [dbo].[gold_machine_features_daily]
+
+	column machine_id
+		dataType: string
+		lineageTag: 2235bd91-8c80-43b7-b178-fbc51f5980fb
+		sourceLineageTag: machine_id
+		summarizeBy: none
+		sourceColumn: machine_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column feature_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d9851561-dd3d-4c8e-aa79-700da7a61069
+		sourceLineageTag: feature_date
+		summarizeBy: none
+		sourceColumn: feature_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column machine_type
+		dataType: string
+		lineageTag: 64f87779-b2ef-4b34-92fb-cce6b3e7c77a
+		sourceLineageTag: machine_type
+		summarizeBy: none
+		sourceColumn: machine_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column manufacturer
+		dataType: string
+		lineageTag: 5ac9d42d-ef0f-4257-af47-5857956f991c
+		sourceLineageTag: manufacturer
+		summarizeBy: none
+		sourceColumn: manufacturer
+
+		annotation SummarizationSetBy = Automatic
+
+	column location
+		dataType: string
+		lineageTag: e7d3efc2-f1b2-4a59-ad75-f77948ba7ed6
+		sourceLineageTag: location
+		summarizeBy: none
+		sourceColumn: location
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_active
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1355199e-623c-4378-81aa-d1653c8409c1
+		sourceLineageTag: is_active
+		summarizeBy: none
+		sourceColumn: is_active
+
+		annotation SummarizationSetBy = Automatic
+
+	column machine_age_days
+		dataType: int64
+		formatString: 0
+		lineageTag: c3ef5aa0-c194-4de5-ae10-2c466ddd49ac
+		sourceLineageTag: machine_age_days
+		summarizeBy: sum
+		sourceColumn: machine_age_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column telemetry_sample_count
+		dataType: int64
+		formatString: 0
+		lineageTag: a6713609-8522-4c40-9c47-92c6a17cf648
+		sourceLineageTag: telemetry_sample_count
+		summarizeBy: sum
+		sourceColumn: telemetry_sample_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column temperature_avg
+		dataType: double
+		lineageTag: 816ef001-dfb9-438c-9fd9-c9eae64c2247
+		sourceLineageTag: temperature_avg
+		summarizeBy: sum
+		sourceColumn: temperature_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column temperature_min
+		dataType: double
+		lineageTag: 6a358629-3db4-4139-8d44-70605ff99cd2
+		sourceLineageTag: temperature_min
+		summarizeBy: sum
+		sourceColumn: temperature_min
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column temperature_max
+		dataType: double
+		lineageTag: cf0a7574-1d66-466d-816c-f688f4c7fb5e
+		sourceLineageTag: temperature_max
+		summarizeBy: sum
+		sourceColumn: temperature_max
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column temperature_std
+		dataType: double
+		lineageTag: a63c9d61-ba08-4649-83c4-ca418a3bcfef
+		sourceLineageTag: temperature_std
+		summarizeBy: sum
+		sourceColumn: temperature_std
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vibration_avg
+		dataType: double
+		lineageTag: 726d43d2-12fa-4482-9bb3-43d525fc46fd
+		sourceLineageTag: vibration_avg
+		summarizeBy: sum
+		sourceColumn: vibration_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vibration_max
+		dataType: double
+		lineageTag: 1ae19ae8-928d-4aab-a68d-7ba7a409c78e
+		sourceLineageTag: vibration_max
+		summarizeBy: sum
+		sourceColumn: vibration_max
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vibration_std
+		dataType: double
+		lineageTag: 457b4b1b-31a7-402e-babb-144e8561c202
+		sourceLineageTag: vibration_std
+		summarizeBy: sum
+		sourceColumn: vibration_std
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column pressure_avg
+		dataType: double
+		lineageTag: 437f334f-ac82-46ab-9e3d-7f0210562095
+		sourceLineageTag: pressure_avg
+		summarizeBy: sum
+		sourceColumn: pressure_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column pressure_min
+		dataType: double
+		lineageTag: 383317d5-e9b2-4196-b5e6-a6f3193ee1fa
+		sourceLineageTag: pressure_min
+		summarizeBy: sum
+		sourceColumn: pressure_min
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column pressure_std
+		dataType: double
+		lineageTag: ca6b6842-b859-4d4b-a717-3df376f06c0e
+		sourceLineageTag: pressure_std
+		summarizeBy: sum
+		sourceColumn: pressure_std
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column rotation_speed_avg
+		dataType: double
+		lineageTag: 77792299-ba85-486b-9c7c-f47018b0811f
+		sourceLineageTag: rotation_speed_avg
+		summarizeBy: sum
+		sourceColumn: rotation_speed_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column rotation_speed_std
+		dataType: double
+		lineageTag: a4efeebc-1b12-48ef-a156-284812d31778
+		sourceLineageTag: rotation_speed_std
+		summarizeBy: sum
+		sourceColumn: rotation_speed_std
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column power_consumption_avg
+		dataType: double
+		lineageTag: c0726401-dac6-4d61-bf56-7a40a04a5141
+		sourceLineageTag: power_consumption_avg
+		summarizeBy: sum
+		sourceColumn: power_consumption_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column power_consumption_max
+		dataType: double
+		lineageTag: 7a8c1fde-29a0-4f9c-ae47-5749d195b515
+		sourceLineageTag: power_consumption_max
+		summarizeBy: sum
+		sourceColumn: power_consumption_max
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column load_avg
+		dataType: double
+		lineageTag: 6002550c-93fd-449d-b071-124a985ce15f
+		sourceLineageTag: load_avg
+		summarizeBy: sum
+		sourceColumn: load_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column load_max
+		dataType: double
+		lineageTag: 5b8ae133-6f30-4385-9a9f-64a3c5ddac1a
+		sourceLineageTag: load_max
+		summarizeBy: sum
+		sourceColumn: load_max
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column maintenance_count_30d
+		dataType: int64
+		formatString: 0
+		lineageTag: 4efe6cdb-cc1f-42ae-aa70-0d9dada0f7e8
+		sourceLineageTag: maintenance_count_30d
+		summarizeBy: sum
+		sourceColumn: maintenance_count_30d
+
+		annotation SummarizationSetBy = Automatic
+
+	column maintenance_duration_hours_30d
+		dataType: double
+		lineageTag: 38a7a256-772e-42a0-93ec-f9ac218cea77
+		sourceLineageTag: maintenance_duration_hours_30d
+		summarizeBy: sum
+		sourceColumn: maintenance_duration_hours_30d
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column maintenance_cost_30d
+		dataType: double
+		lineageTag: 413c92be-5c54-4b9b-8abe-13d1c4c2a27a
+		sourceLineageTag: maintenance_cost_30d
+		summarizeBy: sum
+		sourceColumn: maintenance_cost_30d
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column days_since_last_maintenance
+		dataType: int64
+		formatString: 0
+		lineageTag: 65f2124c-629c-44fa-8f67-908542368e9a
+		sourceLineageTag: days_since_last_maintenance
+		summarizeBy: sum
+		sourceColumn: days_since_last_maintenance
+
+		annotation SummarizationSetBy = Automatic
+
+	column failure_within_7d
+		dataType: int64
+		formatString: 0
+		lineageTag: ea1f64f4-c3b5-4819-8452-bc6bc27cb1d5
+		sourceLineageTag: failure_within_7d
+		summarizeBy: sum
+		sourceColumn: failure_within_7d
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gold_machine_features_daily = entity
+		mode: directLake
+		source
+			entityName: gold_machine_features_daily
+			schemaName: dbo
+			expressionSource: 'DirectLake - lh_predictive_maintenance'
+

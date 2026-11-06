@@ -1,0 +1,77 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "440087b4470e00312987",
+  "position": {
+    "x": 18.100587824273525,
+    "y": 7.2954626784220551,
+    "z": 5000,
+    "height": 75,
+    "width": 166,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold_machine_features_daily"
+                    }
+                  },
+                  "Property": "location"
+                }
+              },
+              "queryRef": "gold_machine_features_daily.location",
+              "nativeQueryRef": "location",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "ac648eb81e30210ab599",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_machine_features_daily"
+              }
+            },
+            "Property": "location"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}
