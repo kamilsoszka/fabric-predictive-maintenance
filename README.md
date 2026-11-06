@@ -1,8 +1,8 @@
 # Microsoft Fabric Predictive Maintenance Platform
 
-End-to-end predictive maintenance platform built with Microsoft Fabric, PySpark, MLflow, LightGBM, Direct Lake semantic modeling, DAX, and Power BI.
+End-to-end predictive maintenance platform built with Microsoft Fabric, PySpark, MLflow, LightGBM, Direct Lake, DAX, and Power BI.
 
-The project processes industrial machine telemetry and maintenance data through a Medallion architecture, engineers machine-level features, trains a binary classification model, generates seven-day failure predictions, and exposes operational insights through an interactive Power BI dashboard.
+The solution processes industrial machine telemetry and maintenance data through a Medallion architecture, engineers machine-level features, trains a binary classification model, generates seven-day failure predictions, and exposes operational insights through an interactive Power BI dashboard.
 
 ## Project Overview
 
@@ -15,6 +15,7 @@ The solution includes:
 - telemetry and maintenance feature engineering
 - LightGBM model training
 - MLflow experiment tracking
+- registered model management
 - batch inference
 - machine-level risk classification
 - Direct Lake semantic modeling
@@ -24,15 +25,15 @@ The solution includes:
 
 ## Business Objective
 
-Unexpected equipment failures can cause production downtime, emergency maintenance costs, and operational disruptions.
+Unexpected equipment failures can cause production downtime, emergency maintenance costs, and operational disruption.
 
 This project provides a data-driven maintenance workflow that enables operations teams to:
 
-- monitor the health of the machine fleet
+- monitor machine-fleet health
 - identify machines with elevated failure probability
 - prioritize preventive inspections
 - compare risk across locations and machine types
-- investigate historical telemetry and maintenance patterns
+- investigate telemetry and maintenance patterns
 - support maintenance planning with model-generated risk scores
 
 ## Architecture
@@ -91,8 +92,6 @@ fabric-predictive-maintenance/
 └── README.md
 ```
 
-The `docs/images` directory is intended for the final dashboard screenshot and other documentation assets.
-
 ## Data Pipeline
 
 ### 1. Demo Data Generation
@@ -104,7 +103,7 @@ The `00_generate_demo_data` notebook creates a reproducible industrial dataset c
 - maintenance events
 - failure events
 
-The generated dataset represents 100 machines operating across multiple locations and machine types.
+The generated dataset represents 100 machines across multiple locations and machine types.
 
 ### 2. Silver Transformations
 
@@ -122,17 +121,17 @@ The `02_feature_engineering` notebook creates daily machine-level features, incl
 
 - machine age
 - telemetry sample count
-- average, minimum, maximum, and standard deviation of temperature
+- temperature statistics
 - vibration statistics
 - pressure statistics
-- rotation speed statistics
-- power consumption statistics
-- load statistics
+- rotation-speed statistics
+- power-consumption statistics
+- machine-load statistics
 - maintenance activity during the previous 30 days
-- days since the most recent maintenance event
+- days since the latest maintenance event
 - seven-day failure target
 
-The final feature table is stored as:
+The final feature table is:
 
 ```text
 gold_machine_features_daily
@@ -147,15 +146,15 @@ The model predicts whether a machine is likely to fail within the following seve
 The training workflow includes:
 
 - feature selection
-- categorical feature handling
-- train and test separation
+- categorical-feature handling
+- training and test separation
 - LightGBM model training
 - probability prediction
 - classification evaluation
 - MLflow experiment logging
 - model registration in Microsoft Fabric
 
-The registered model is stored as:
+The registered model is:
 
 ```text
 predictive_maintenance_lightgbm
@@ -166,7 +165,7 @@ predictive_maintenance_lightgbm
 The `04_batch_scoring` notebook:
 
 - loads the registered model
-- selects the most recent machine features
+- selects the latest machine features
 - calculates failure probabilities
 - applies the decision threshold
 - assigns operational risk levels
@@ -189,7 +188,7 @@ The prediction table contains the following primary fields:
 | Column | Description |
 |---|---|
 | `machine_id` | Unique machine identifier |
-| `feature_date` | Feature calculation date |
+| `feature_date` | Feature-calculation date |
 | `failure_probability` | Model-generated probability of failure |
 | `predicted_failure_7d` | Binary seven-day failure prediction |
 | `risk_level` | Operational risk category |
@@ -214,7 +213,7 @@ A machine can be classified as `HIGH` risk without receiving a binary failure pr
 
 ## Current Scoring Results
 
-The latest scoring run produced predictions for 100 machines:
+The validated scoring run produced predictions for 100 machines:
 
 | Metric | Result |
 |---|---:|
@@ -242,7 +241,7 @@ The Direct Lake semantic model is stored as:
 Predictive Maintenance Analytics.SemanticModel
 ```
 
-The model contains:
+The semantic model contains:
 
 - `gold_machine_features_daily`
 - `gold_failure_predictions`
@@ -250,8 +249,6 @@ The model contains:
 The relationship uses `machine_id` and supports filtering between machine features and prediction results.
 
 ### DAX Measures
-
-The semantic model includes the following measures:
 
 ```DAX
 Total Machines =
@@ -322,12 +319,6 @@ The dashboard includes:
 
 ![Predictive Maintenance Dashboard](docs/images/predictive-maintenance-dashboard.png)
 
-The screenshot becomes visible after the dashboard image is added to:
-
-```text
-docs/images/predictive-maintenance-dashboard.png
-```
-
 ## Validated Results
 
 The implementation was validated through the following checks:
@@ -341,13 +332,13 @@ The implementation was validated through the following checks:
 - risk-level distribution validation
 - decision-threshold validation
 - maintenance-history validation
-- duplicate maintenance identifier check
+- duplicate maintenance-identifier check
 - same-type peer comparison using z-scores
 - fourteen-day telemetry trend analysis
 - Power BI slicer and relationship testing
 - Fabric-to-GitHub synchronization
 
-## Example Operational Findings
+## Operational Findings
 
 ### Machine M0062
 
@@ -358,17 +349,18 @@ The implementation was validated through the following checks:
 - predicted failure within seven days: yes
 - risk level: `HIGH`
 - days since last maintenance: 79
-- notable pattern: repeated vibration spikes
+- observed pattern: repeated vibration spikes
 
 ### Machine M0097
 
 - machine type: `CNC`
-- `Warsaw`
+- manufacturer: `NordTech`
+- location: `Warsaw`
 - failure probability: approximately 58.50%
 - predicted failure within seven days: yes
 - risk level: `HIGH`
 - days since last maintenance: 44
-- notable pattern: consistently high machine load
+- observed pattern: consistently high machine load
 
 These observations support operational investigation. They should not be treated as causal model explanations without feature-attribution outputs such as SHAP values.
 
@@ -417,13 +409,13 @@ After notebook execution:
 2. Confirm that the LightGBM model is registered.
 3. Refresh the semantic model if required.
 4. Open the Power BI report.
-5. Validate the KPI values and slicer interactions.
+5. Validate KPI values and slicer interactions.
 
 ## Design Decisions
 
 ### Why Microsoft Fabric
 
-Microsoft Fabric provides an integrated environment for:
+Microsoft Fabric provides one integrated environment for:
 
 - data engineering
 - Lakehouse storage
@@ -440,21 +432,21 @@ Direct Lake enables Power BI reporting over OneLake data without importing a sep
 
 ### Why LightGBM
 
-LightGBM is suitable for structured machine telemetry and maintenance features, supports nonlinear relationships, and provides efficient probability-based classification.
+LightGBM is suitable for structured telemetry and maintenance features, supports nonlinear relationships, and provides efficient probability-based classification.
 
 ### Why Batch Scoring
 
-A daily batch-scoring process matches the operational use case in which maintenance teams review machine risk at scheduled intervals.
+A daily batch-scoring process matches an operational workflow in which maintenance teams review machine risk at scheduled intervals.
 
 ## Limitations
 
 - the project uses synthetic demonstration data
-- model performance does not represent a real industrial deployment
-- no streaming inference is implemented
-- no automated maintenance work-order integration is included
-- per-prediction SHAP explanations are not currently stored
+- model performance does not represent a production industrial deployment
+- streaming inference is not implemented
+- automated maintenance work-order integration is not included
+- per-prediction SHAP explanations are not stored
 - alerting and notification workflows are outside the current scope
-- model drift monitoring is not yet implemented
+- model-drift monitoring is not implemented
 
 ## Potential Extensions
 
@@ -462,12 +454,12 @@ Future development can include:
 
 - SHAP-based prediction explanations
 - feature-importance reporting
-- model drift monitoring
-- data drift monitoring
+- model-drift monitoring
+- data-drift monitoring
 - automated retraining
 - real-time Eventstream ingestion
 - maintenance alerts through Power Automate
-- integration with enterprise asset management systems
+- integration with enterprise asset-management systems
 - deployment pipelines across Development, Test, and Production
 - historical risk-trend reporting
 - cost-sensitive decision thresholds
@@ -492,7 +484,4 @@ The following components are complete:
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-- GitHub: [kamilsoszka](https://github.com/kamilsoszka)
-- Portfolio focus: Data Engineering, Analytics Engineering, Machine Learning, Microsoft Fabric, Power BI, AWS, and Google Cloud Platform
+This project is licensed under the [MIT License](LICENSE).
