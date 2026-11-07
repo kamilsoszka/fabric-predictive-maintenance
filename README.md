@@ -302,6 +302,8 @@ The Power BI report is stored as:
 Predictive Maintenance Dashboard.Report
 ```
 
+![Predictive Maintenance Dashboard](docs/images/predictive-maintenance-dashboard.png)
+
 The dashboard includes:
 
 - total machine count
