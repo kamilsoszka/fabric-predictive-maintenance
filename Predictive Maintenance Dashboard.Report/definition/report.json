@@ -9,6 +9,15 @@
         "page": "2.3.1"
       },
       "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "CopilotDefault",
+      "reportVersionAtImport": {
+        "visual": "2.15.0",
+        "report": "3.4.0",
+        "page": "2.3.1"
+      },
+      "type": "SharedResources"
     }
   },
   "objects": {
@@ -31,6 +40,11 @@
       "name": "SharedResources",
       "type": "SharedResources",
       "items": [
+        {
+          "name": "CopilotDefault",
+          "path": "BaseThemes/CopilotDefault.json",
+          "type": "BaseTheme"
+        },
         {
           "name": "Fluent2-CY26SU11",
           "path": "BaseThemes/Fluent2-CY26SU11.json",

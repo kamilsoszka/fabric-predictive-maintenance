@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "gold_machine_features_daily.machine_type",
-              "nativeQueryRef": "machine_type",
-              "active": true
+              "nativeQueryRef": "Machine type",
+              "active": true,
+              "displayName": "Machine type"
             }
           ]
         }
@@ -51,6 +52,21 @@
       "general": [
         {
           "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
         }
       ]
     },

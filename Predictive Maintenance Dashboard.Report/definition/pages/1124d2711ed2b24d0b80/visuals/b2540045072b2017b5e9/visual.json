@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "b2540045072b2017b5e9",
   "position": {
-    "x": 15.957888904280372,
-    "y": 146.81257791937941,
+    "x": 16.350088704908337,
+    "y": 147.15079834417506,
     "z": 8000,
-    "height": 561.71768943066911,
-    "width": 456.71479992034909,
+    "height": 561.35304553518631,
+    "width": 427.37317970136013,
     "tabOrder": 8000
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "gold_failure_predictions.machine_id",
-              "nativeQueryRef": "machine_id"
+              "nativeQueryRef": "Machine ID",
+              "displayName": "Machine ID"
             },
             {
               "field": {
@@ -41,7 +42,8 @@
                 }
               },
               "queryRef": "gold_failure_predictions.failure_probability",
-              "nativeQueryRef": "failure_probability",
+              "nativeQueryRef": "Failure probability",
+              "displayName": "Failure probability",
               "format": "0.00 %;-0.00 %;0.00 %"
             },
             {
@@ -56,7 +58,8 @@
                 }
               },
               "queryRef": "gold_failure_predictions.risk_level",
-              "nativeQueryRef": "risk_level"
+              "nativeQueryRef": "Risk level",
+              "displayName": "Risk level"
             },
             {
               "field": {
@@ -70,7 +73,8 @@
                 }
               },
               "queryRef": "gold_failure_predictions.predicted_failure_7d",
-              "nativeQueryRef": "predicted_failure_7d",
+              "nativeQueryRef": "Predicted failure 7d",
+              "displayName": "Predicted failure 7d",
               "format": "0 %;-0 %;0 %"
             }
           ]
@@ -115,7 +119,14 @@
             "bold": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
                 }
               }
             }
@@ -170,13 +181,28 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "136D"
+                  "Value": "108.74985192705785D"
                 }
               }
             }
           },
           "selector": {
             "metadata": "gold_failure_predictions.predicted_failure_7d"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
           }
         }
       ]

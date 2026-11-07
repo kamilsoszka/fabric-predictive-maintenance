@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "1b189b5d6b67e98846b0",
   "position": {
-    "x": 480.3324560188392,
-    "y": 146.81257791937941,
+    "x": 456.74276500591367,
+    "y": 147.15079834417506,
     "z": 4000,
-    "height": 560.12190054024109,
-    "width": 781.93655630973819,
+    "height": 561.35304553518631,
+    "width": 804.93908005617982,
     "tabOrder": 4000
   },
   "visual": {
@@ -80,6 +80,33 @@
                   "Value": "true"
                 }
               }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'''Segoe UI Bold'', wf_segoe-ui_bold, helvetica, arial, sans-serif'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "gridlineShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
             }
           }
         }
@@ -111,8 +138,53 @@
             }
           }
         }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "28f3b2ddd868394b0548",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_failure_predictions"
+              }
+            },
+            "Property": "risk_level"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "f78cc77f794aeddb50aa",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_failure_predictions"
+              }
+            },
+            "Property": "Total Machines"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

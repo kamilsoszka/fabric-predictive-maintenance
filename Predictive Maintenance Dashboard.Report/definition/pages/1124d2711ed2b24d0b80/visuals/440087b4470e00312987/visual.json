@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "gold_machine_features_daily.location",
-              "nativeQueryRef": "location",
-              "active": true
+              "nativeQueryRef": "Location",
+              "active": true,
+              "displayName": "Location"
             }
           ]
         }
@@ -51,6 +52,21 @@
       "general": [
         {
           "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
         }
       ]
     },
