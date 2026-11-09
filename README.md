@@ -1,86 +1,85 @@
 # Microsoft Fabric Predictive Maintenance Platform
 
-End-to-end predictive maintenance platform built with Microsoft Fabric, PySpark, MLflow, LightGBM, Direct Lake, DAX, and Power BI.
+A Microsoft Fabric portfolio project demonstrating an end-to-end predictive-maintenance workflow with deterministic synthetic data, a Medallion architecture, PySpark feature engineering, MLflow model management, LightGBM batch scoring, Direct Lake, DAX, and Power BI.
 
-The solution processes industrial machine telemetry and maintenance data through a Medallion architecture, engineers machine-level features, trains a binary classification model, generates seven-day failure predictions, and exposes operational insights through an interactive Power BI dashboard.
+> [!NOTE]
+> This project uses synthetic demonstration data. Failure-linked degradation profiles are intentionally injected into telemetry to create a controlled machine-learning scenario. Model results do not represent validated performance on production industrial equipment.
 
-## Project Overview
+## Business objective
 
-The platform identifies machines at elevated risk of failure within the next seven days.
+The platform estimates whether each machine is at risk of failure within the next seven days and supports maintenance teams with:
 
-The solution includes:
-
-- synthetic industrial data generation
-- Bronze, Silver, and Gold data layers
-- telemetry and maintenance feature engineering
-- LightGBM model training
-- MLflow experiment tracking
-- registered model management
-- batch inference
-- machine-level risk classification
-- Direct Lake semantic modeling
-- reusable DAX measures
-- interactive Power BI reporting
-- Git integration between Microsoft Fabric and GitHub
-
-## Business Objective
-
-Unexpected equipment failures can cause production downtime, emergency maintenance costs, and operational disruption.
-
-This project provides a data-driven maintenance workflow that enables operations teams to:
-
-- monitor machine-fleet health
-- identify machines with elevated failure probability
-- prioritize preventive inspections
-- compare risk across locations and machine types
-- investigate telemetry and maintenance patterns
-- support maintenance planning with model-generated risk scores
+- fleet-health monitoring
+- probability-based machine ranking
+- separate operational risk categories and binary model alerts
+- preventive inspection prioritization
+- comparisons by location and machine type
+- telemetry and maintenance context for investigation
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    A[Synthetic Machine Data] --> B[Bronze Layer]
-    B --> C[Silver Transformations]
-    C --> D[Gold Feature Layer]
-    D --> E[LightGBM Training]
-    E --> F[MLflow Experiment]
-    E --> G[Registered ML Model]
-    G --> H[Batch Scoring]
-    H --> I[Failure Predictions]
-    I --> J[Direct Lake Semantic Model]
-    D --> J
-    J --> K[Power BI Dashboard]
+    A[Deterministic synthetic data] --> B[Bronze Delta tables]
+    B --> C[Validated Silver tables]
+    C --> D[Gold daily features]
+    D --> E[Chronological train validation test split]
+    E --> F[LightGBM training]
+    F --> G[MLflow experiment and registered model]
+    G --> H[Approved champion model version]
+    H --> I[Version-bound batch scoring]
+    I --> J[Prediction history]
+    J --> K[Current risk snapshot]
+    K --> L[Direct Lake semantic model]
+    L --> M[Power BI dashboard]
 ```
 
-## Technology Stack
+## Technology stack
 
 | Area | Technology |
-|---|---|
-| Data platform | Microsoft Fabric |
+| --- | --- |
+| Unified analytics platform | Microsoft Fabric |
 | Storage | OneLake and Fabric Lakehouse |
-| Data processing | PySpark and Spark SQL |
+| Processing | PySpark and Spark SQL |
 | Table format | Delta Lake |
-| Architecture | Medallion architecture |
-| Machine learning | LightGBM |
+| Data architecture | Bronze, Silver, and Gold Medallion layers |
+| Machine learning | LightGBM and scikit-learn pipelines |
 | Experiment tracking | MLflow |
-| Model management | Fabric ML Model |
-| Semantic layer | Direct Lake semantic model |
+| Model management | Fabric ML Model with version tags |
+| Semantic model | Direct Lake |
 | Business logic | DAX |
 | Reporting | Power BI |
-| Version control | GitHub and Fabric Git integration |
+| Version control | Native Fabric Git integration with GitHub |
 
-## Repository Structure
+## Fabric items
+
+| Item | Type | Purpose |
+| --- | --- | --- |
+| `00_generate_demo_data_fabric` | Notebook | Generates deterministic synthetic Bronze data. |
+| `01_silver_transformation_fabric` | Notebook | Standardizes and validates Bronze data. |
+| `02_feature_engineering_fabric` | Notebook | Creates leakage-aware daily Gold features. |
+| `03_model_training_fabric` | Notebook | Trains, evaluates, registers, and tags the approved model version. |
+| `03_model_training_fabric` | Experiment | Stores the current MLflow training run. |
+| `04_batch_scoring_fabric` | Notebook | Loads the approved model and writes prediction history. |
+| `05_reporting_layer_fabric` | Notebook | Builds the current reporting snapshot. |
+| `lh_predictive_maintenance` | Lakehouse | Stores Bronze, Silver, Gold, history, and snapshot tables. |
+| `predictive_maintenance_lightgbm` | ML Model | Stores registered LightGBM model versions. |
+| `Predictive Maintenance Analytics` | Semantic model | Direct Lake model and DAX measures. |
+| `Predictive Maintenance Dashboard` | Report | Interactive operational dashboard. |
+
+Legacy notebooks without the `_fabric` suffix were removed from the current workspace after the hardened pipeline was validated. Earlier versions remain recoverable through Git history and the Fabric Recycle bin.
+
+## Repository structure
 
 ```text
 fabric-predictive-maintenance/
-├── 00_generate_demo_data.Notebook/
-├── 01_silver_transformation.Notebook/
-├── 02_feature_engineering.Notebook/
-├── 03_model_training.Notebook/
-├── 03_model_training.MLExperiment/
-├── 04_batch_scoring.Notebook/
-├── 05_reporting_layer.Notebook/
+├── 00_generate_demo_data_fabric.Notebook/
+├── 01_silver_transformation_fabric.Notebook/
+├── 02_feature_engineering_fabric.Notebook/
+├── 03_model_training_fabric.Notebook/
+├── 03_model_training_fabric.MLExperiment/
+├── 04_batch_scoring_fabric.Notebook/
+├── 05_reporting_layer_fabric.Notebook/
 ├── lh_predictive_maintenance.Lakehouse/
 ├── predictive_maintenance_lightgbm.MLModel/
 ├── Predictive Maintenance Analytics.SemanticModel/
@@ -92,67 +91,127 @@ fabric-predictive-maintenance/
 └── README.md
 ```
 
-## Data Pipeline
+Fabric-generated artifact definitions are changed in Microsoft Fabric and committed through native Fabric Git integration. They are not edited manually in GitHub.
 
-### 1. Demo Data Generation
+## Data pipeline
 
-The `00_generate_demo_data` notebook creates a reproducible industrial dataset containing:
+### 1. Deterministic Bronze generation
 
-- machine master data
-- machine telemetry
-- maintenance events
-- failure events
+`00_generate_demo_data_fabric` uses the fixed reference timestamp:
 
-The generated dataset represents 100 machines across multiple locations and machine types.
+```text
+2026-11-06 14:00:00 UTC
+```
 
-### 2. Silver Transformations
+Repeated runs therefore produce the same logical date range and identifiers rather than shifting with `datetime.now()` or `current_date()`.
 
-The `01_silver_transformation` notebook:
+Validated Bronze tables:
 
-- validates source records
-- standardizes data types
-- removes invalid or duplicate records
-- prepares telemetry and maintenance data for analytical processing
-- creates cleaned Silver-layer tables
+| Table | Rows |
+| --- | ---: |
+| `bronze_machine_master` | 100 |
+| `bronze_failure_events` | 150 |
+| `bronze_maintenance_events` | 300 |
+| `bronze_machine_telemetry` | 1,728,000 |
 
-### 3. Feature Engineering
+Telemetry contains 180 days of 15-minute observations for 100 machines. The generator creates deterministic baseline sensor behavior, failure-specific degradation profiles, variable warning windows, and background anomalies to create class overlap.
 
-The `02_feature_engineering` notebook creates daily machine-level features, including:
+### 2. Silver transformation
 
-- machine age
-- telemetry sample count
-- temperature statistics
-- vibration statistics
-- pressure statistics
-- rotation-speed statistics
-- power-consumption statistics
-- machine-load statistics
-- maintenance activity during the previous 30 days
-- days since the latest maintenance event
-- seven-day failure target
+`01_silver_transformation_fabric` performs:
 
-The final feature table is:
+- explicit type casting
+- identifier normalization
+- controlled-category validation
+- future-date validation against the fixed reference date
+- deterministic rejection of duplicate business keys
+- uniqueness checks for `telemetry_id`
+- uniqueness checks for `(machine_id, telemetry_timestamp)`
+- orphan checks for failure, maintenance, and telemetry records
+- technical range validation for all sensor values
+
+Validated Silver tables preserve the Bronze row counts:
+
+| Table | Rows |
+| --- | ---: |
+| `silver_machine_master` | 100 |
+| `silver_failure_events` | 150 |
+| `silver_maintenance_events` | 300 |
+| `silver_machine_telemetry` | 1,728,000 |
+
+### 3. Gold feature engineering
+
+`02_feature_engineering_fabric` produces one record per machine and complete day. It reports and excludes incomplete machine-days rather than silently treating them as complete.
+
+The feature set includes:
+
+- daily temperature, vibration, pressure, speed, power, and load statistics
+- one-day changes for selected telemetry measures
+- seven-day rolling averages
+- maintenance count, duration, and cost over the previous 30 days
+- `has_maintenance_history`
+- `days_since_last_maintenance`
+- machine attributes and machine age
+- seven-day future-failure target
+
+The final table is:
 
 ```text
 gold_machine_features_daily
 ```
 
-### 4. Model Training
+Validated output:
 
-The `03_model_training` notebook trains a LightGBM binary classification model.
+| Metric | Result |
+| --- | ---: |
+| Machine-day rows | 17,900 |
+| Machines | 100 |
+| Positive target rows | 1,044 |
+| Positive rate | 5.83% |
 
-The model predicts whether a machine is likely to fail within the following seven days.
+The notebook verifies that known leakage columns such as failure dates, failure IDs, helper degradation signals, and future-event fields are absent from model inputs.
 
-The training workflow includes:
+## Model training and evaluation
 
-- feature selection
-- categorical-feature handling
-- training and test separation
-- LightGBM model training
-- probability prediction
-- classification evaluation
-- MLflow experiment logging
-- model registration in Microsoft Fabric
+`03_model_training_fabric` uses a chronological split rather than a random row split:
+
+- training: earliest 70% of feature dates
+- validation: next 15%
+- test: latest 15%
+
+This prevents neighboring machine-days from being randomly mixed across training and evaluation datasets.
+
+The notebook compares Logistic Regression with LightGBM, handles class imbalance, encodes categorical values with unknown-category support, and stores preprocessing with the classifier in one scikit-learn pipeline.
+
+Reported metrics include:
+
+- PR AUC
+- ROC AUC
+- precision
+- recall
+- F1 score
+- confusion-matrix counts
+- train-to-validation ROC AUC gap
+
+### Threshold policy
+
+The decision threshold is selected on the validation set using an explicit policy:
+
+```text
+maximize validation F1 subject to precision >= 0.25
+```
+
+The selected threshold is stored as a tag on the exact registered model version. The test set is then used once for final evaluation and is not used for further threshold tuning.
+
+### Approved model version
+
+Microsoft Fabric returned HTTP `404` for MLflow registered-model aliases. The project therefore uses a Fabric-compatible model-version tag:
+
+```text
+deployment_status = champion
+```
+
+The scoring notebook selects the registered version carrying this tag and reads the `decision_threshold` tag from the same version. This prevents model-version and threshold mismatches.
 
 The registered model is:
 
@@ -160,80 +219,91 @@ The registered model is:
 predictive_maintenance_lightgbm
 ```
 
-### 5. Batch Scoring
+## Batch scoring
 
-The `04_batch_scoring` notebook:
+`04_batch_scoring_fabric`:
 
-- loads the registered model
-- selects the latest machine features
-- calculates failure probabilities
-- applies the decision threshold
+- loads the registered version tagged `deployment_status = champion`
+- reads the version-bound decision threshold
+- validates that required model features exist
+- checks feature freshness
+- scores the latest feature date for all 100 machines
+- stores probability and binary alert separately
 - assigns operational risk levels
-- writes prediction results to the Gold layer
+- records model name, version, deployment status, threshold, and UTC scoring timestamp
 
-The final prediction table is:
+### Prediction history
+
+Predictions are retained in:
 
 ```text
-gold_failure_predictions
+gold_failure_predictions_history
 ```
 
-### 6. Reporting Layer
+The notebook uses an idempotent Delta `MERGE` key comprising machine, feature date, model version, and threshold. Repeating the same scoring configuration updates the same logical records instead of discarding all history.
 
-The `05_reporting_layer` notebook prepares reporting-ready data and validates the final analytical outputs used by the semantic model and Power BI report.
-
-## Prediction Output
-
-The prediction table contains the following primary fields:
+Primary output fields:
 
 | Column | Description |
-|---|---|
-| `machine_id` | Unique machine identifier |
-| `feature_date` | Feature-calculation date |
-| `failure_probability` | Model-generated probability of failure |
-| `predicted_failure_7d` | Binary seven-day failure prediction |
-| `risk_level` | Operational risk category |
-| `decision_threshold` | Probability threshold used for classification |
-| `model_name` | Registered model name |
-| `model_version` | Model version used during scoring |
-| `prediction_timestamp` | Batch-scoring timestamp |
+| --- | --- |
+| `machine_id` | Unique machine identifier. |
+| `feature_date` | Date represented by the scored features. |
+| `failure_probability` | Continuous seven-day failure probability. |
+| `model_alert` | Binary decision produced with the version-bound threshold. |
+| `risk_level` | Operational band independent of the binary alert. |
+| `model_name` | Registered model name. |
+| `model_version` | Exact version used for scoring. |
+| `deployment_status` | Version approval tag, currently `champion`. |
+| `decision_threshold` | Threshold associated with the selected version. |
+| `prediction_timestamp_utc` | UTC scoring timestamp. |
 
-## Risk Classification
+## Reporting layer
 
-The scoring layer assigns machines to three operational risk categories:
+`05_reporting_layer_fabric` builds the current snapshot:
 
-| Risk level | Interpretation |
-|---|---|
-| `LOW` | Low estimated failure probability |
-| `MEDIUM` | Elevated probability requiring monitoring |
-| `HIGH` | High-priority machine requiring inspection |
+```text
+gold_maintenance_risk_current
+```
 
-The binary prediction uses a decision threshold of `0.50`.
+The snapshot combines current predictions, machine attributes, telemetry features, maintenance features, model metadata, inspection priority, and recommended action.
 
-A machine can be classified as `HIGH` risk without receiving a binary failure prediction when its probability is elevated but remains below the decision threshold.
+The reporting contract intentionally separates:
 
-## Current Scoring Results
+- `failure_probability`, a continuous model output
+- `risk_level`, an operational probability band
+- `model_alert`, a stricter binary decision
 
-The validated scoring run produced predictions for 100 machines:
+A machine can therefore be `HIGH` risk while `model_alert = 0`. The Power BI report presents these as different concepts.
+
+## Risk classification
+
+| Risk level | Probability range | Interpretation |
+| --- | ---: | --- |
+| `LOW` | below 20% | Continue standard monitoring. |
+| `MEDIUM` | 20% to below 40% | Review within seven days. |
+| `HIGH` | 40% to below 70% | Inspect within 72 hours. |
+| `CRITICAL` | 70% or above | Inspect within 24 hours. |
+
+The binary alert threshold is not hardcoded in the reporting layer. It is loaded from the approved model version during scoring.
+
+## Current validated scoring results
+
+The final full run of notebooks `00–05` produced:
 
 | Metric | Result |
-|---|---:|
+| --- | ---: |
 | Total machines | 100 |
-| Predicted failures within 7 days | 2 |
-| High-risk machines | 4 |
-| Predicted failure rate | 2.00% |
+| Model alerts | 0 |
+| Model alert rate | 0.00% |
 | Average failure probability | 12.50% |
-| Low-risk machines | 84 |
-| Medium-risk machines | 12 |
-| High-risk machines | 4 |
+| Low-risk machines | 33 |
+| Medium-risk machines | 57 |
+| High-risk machines | 10 |
+| Critical-risk machines | 0 |
 
-The two highest-risk machines are:
+Zero model alerts is a valid outcome. The approved threshold was not lowered merely to force positive predictions.
 
-| Machine | Failure probability | Risk level | Predicted failure |
-|---|---:|---|---:|
-| `M0062` | 68.75% | HIGH | 1 |
-| `M0097` | 58.50% | HIGH | 1 |
-
-## Semantic Model
+## Semantic model
 
 The Direct Lake semantic model is stored as:
 
@@ -241,62 +311,54 @@ The Direct Lake semantic model is stored as:
 Predictive Maintenance Analytics.SemanticModel
 ```
 
-The semantic model contains:
+The report uses `gold_maintenance_risk_current` for operational KPIs, machine details, and risk distribution. `gold_machine_features_daily` remains available for feature-level analysis.
 
-- `gold_machine_features_daily`
-- `gold_failure_predictions`
-
-The relationship uses `machine_id` and supports filtering between machine features and prediction results.
-
-### DAX Measures
+Core DAX measures:
 
 ```DAX
-Total Machines =
-DISTINCTCOUNT(gold_failure_predictions[machine_id])
+Total Machines Current =
+DISTINCTCOUNT(
+    gold_maintenance_risk_current[machine_id]
+)
 ```
 
 ```DAX
-Predicted Failures =
-CALCULATE(
-    DISTINCTCOUNT(gold_failure_predictions[machine_id]),
-    gold_failure_predictions[predicted_failure_7d] = 1
+Model Alerts =
+SUM(
+    gold_maintenance_risk_current[model_alert]
+)
+```
+
+```DAX
+Model Alert Rate =
+DIVIDE(
+    [Model Alerts],
+    [Total Machines Current],
+    0
 )
 ```
 
 ```DAX
 Average Failure Probability =
-AVERAGE(gold_failure_predictions[failure_probability])
+AVERAGE(
+    gold_maintenance_risk_current[failure_probability]
+)
 ```
 
 ```DAX
-High Risk Machines =
+High Risk Machines Current =
 CALCULATE(
-    DISTINCTCOUNT(gold_failure_predictions[machine_id]),
-    gold_failure_predictions[risk_level] = "HIGH"
+    DISTINCTCOUNT(
+        gold_maintenance_risk_current[machine_id]
+    ),
+    gold_maintenance_risk_current[risk_level] = "HIGH"
+        || gold_maintenance_risk_current[risk_level] = "CRITICAL"
 )
 ```
 
-```DAX
-Predicted Failure Rate =
-DIVIDE(
-    [Predicted Failures],
-    [Total Machines],
-    0
-)
-```
+## Power BI dashboard
 
-```DAX
-High Risk Rate =
-DIVIDE(
-    [High Risk Machines],
-    [Total Machines],
-    0
-)
-```
-
-## Power BI Dashboard
-
-The Power BI report is stored as:
+The report is stored as:
 
 ```text
 Predictive Maintenance Dashboard.Report
@@ -306,179 +368,140 @@ Predictive Maintenance Dashboard.Report
 
 The dashboard includes:
 
-- total machine count
-- predicted failure count
-- high-risk machine count
-- predicted failure rate
+- total machines
+- model alerts
+- high- or critical-risk machines
+- model alert rate
 - average failure probability
 - machine distribution by risk level
 - location slicer
 - machine-type slicer
-- machine-level operational table
-- descending ranking by failure probability
+- machine-level probability, risk, and alert table
 
-## Validated Results
+Both slicers were validated against all KPI cards, the risk chart, and the machine table.
 
-The implementation was validated through the following checks:
+## End-to-end validation
 
-- correct Fabric Lakehouse connection
-- presence of 25 analytical tables
-- successful row-count validation
-- 1,728,000 Bronze telemetry records
-- 17,900 Gold daily feature records
-- 100 machine-level predictions
-- risk-level distribution validation
-- decision-threshold validation
-- maintenance-history validation
-- duplicate maintenance-identifier check
-- same-type peer comparison using z-scores
-- fourteen-day telemetry trend analysis
-- Power BI slicer and relationship testing
-- Fabric-to-GitHub synchronization
+The final hardening run confirmed:
 
-## Operational Findings
+- 20 of 20 Spark jobs succeeded for deterministic Bronze generation
+- 20 of 20 Spark jobs succeeded for Silver transformation
+- 20 of 20 Spark jobs succeeded for feature engineering
+- the MLflow training run completed successfully
+- 20 of 20 Spark jobs succeeded for batch scoring
+- 19 of 19 Spark jobs succeeded for the reporting layer
+- 1,728,000 unique telemetry records
+- 17,900 Gold machine-day feature records
+- 100 current machine scores
+- no null current predictions
+- prediction history retained
+- current reporting snapshot created
+- model alert and risk level separated
+- Direct Lake report KPIs and slicers validated
+- native Fabric-to-Git synchronization completed with zero pending changes
 
-### Machine M0062
-
-- machine type: `PRESS`
-- manufacturer: `MechaWorks`
-- location: `Gdansk`
-- failure probability: approximately 68.75%
-- predicted failure within seven days: yes
-- risk level: `HIGH`
-- days since last maintenance: 79
-- observed pattern: repeated vibration spikes
-
-### Machine M0097
-
-- machine type: `CNC`
-- manufacturer: `NordTech`
-- location: `Warsaw`
-- failure probability: approximately 58.50%
-- predicted failure within seven days: yes
-- risk level: `HIGH`
-- days since last maintenance: 44
-- observed pattern: consistently high machine load
-
-These observations support operational investigation. They should not be treated as causal model explanations without feature-attribution outputs such as SHAP values.
-
-## Data Quality and Validation
-
-The project includes checks for:
-
-- missing values
-- invalid data types
-- duplicate identifiers
-- unexpected row counts
-- empty analytical tables
-- risk-category consistency
-- prediction-threshold consistency
-- reporting-layer completeness
-
-No duplicated `maintenance_id` values were detected in the validated maintenance dataset.
-
-## Reproducing the Project
+## Reproducing the project
 
 ### Prerequisites
 
-- Microsoft Fabric workspace
-- Fabric capacity or active Fabric trial
-- permission to create Fabric items
-- GitHub account
-- Fabric Git integration enabled
-- Power BI access within Microsoft Fabric
+- Microsoft Fabric workspace on supported capacity or an active trial
+- permission to create and run Fabric notebooks, Lakehouse, Data Science, semantic-model, and report items
+- Fabric Git integration with GitHub
+- PySpark, LightGBM, scikit-learn, pandas, NumPy, Delta Lake, and MLflow available in the Fabric runtime
 
-### Execution Order
+### Execution order
 
-Run the notebooks in the following sequence:
+Run the notebooks in this exact order:
 
 ```text
-00_generate_demo_data
-01_silver_transformation
-02_feature_engineering
-03_model_training
-04_batch_scoring
-05_reporting_layer
+00_generate_demo_data_fabric
+01_silver_transformation_fabric
+02_feature_engineering_fabric
+03_model_training_fabric
+04_batch_scoring_fabric
+05_reporting_layer_fabric
 ```
 
-After notebook execution:
+After execution:
 
-1. Verify the Gold tables in `lh_predictive_maintenance`.
-2. Confirm that the LightGBM model is registered.
-3. Refresh the semantic model if required.
-4. Open the Power BI report.
-5. Validate KPI values and slicer interactions.
+1. Confirm the model version has `deployment_status = champion` and a `decision_threshold` tag.
+2. Confirm `gold_failure_predictions_history` contains the current model version.
+3. Confirm `gold_maintenance_risk_current` contains one current record per machine.
+4. Refresh the Direct Lake semantic model or report visuals if needed.
+5. Validate KPI values, risk distribution, table values, and both slicers.
 
-## Design Decisions
+## Security and operational considerations
 
-### Why Microsoft Fabric
+- The project contains synthetic data and no customer or production telemetry.
+- No secrets, passwords, tokens, or connection strings should be committed.
+- Workspace identities, permissions, capacity, and regional settings must be validated separately after restore.
+- The scoring notebook rejects stale features beyond its configured tolerance.
+- Production deployment should use a controlled model-approval process rather than relying solely on a text tag.
+- The current project demonstrates batch inference, not real-time safety monitoring.
 
-Microsoft Fabric provides one integrated environment for:
+## Known limitations
 
-- data engineering
-- Lakehouse storage
-- Spark processing
-- machine learning
-- experiment tracking
-- semantic modeling
-- Power BI reporting
-- Git-based lifecycle management
+- Data and failure mechanisms are synthetic.
+- Injected degradation profiles are based on known synthetic future failures.
+- Model metrics validate the workflow, not production industrial performance.
+- Risk bands are operational heuristics rather than calibrated maintenance-service levels.
+- MLflow registered-model aliases were unavailable in the tested Fabric environment; version tags are used instead.
+- Streaming ingestion and online inference are not implemented.
+- Automated work-order creation and alert delivery are outside the current scope.
+- SHAP explanations are not persisted for individual predictions.
+- Drift monitoring and automated retraining are not implemented.
+- Prediction-outcome reconciliation requires future observed failure data.
 
-### Why Direct Lake
+## Potential extensions
 
-Direct Lake enables Power BI reporting over OneLake data without importing a separate copy into the semantic model.
+- SHAP-based local explanations
+- probability calibration
+- event-level failure-detection metrics
+- cost-sensitive threshold optimization
+- prediction-outcome reconciliation
+- model and data drift monitoring
+- automated retraining with approval gates
+- Eventstream ingestion and real-time feature processing
+- Power Automate or Teams maintenance notifications
+- enterprise asset-management integration
+- Development, Test, and Production deployment pipelines
 
-### Why LightGBM
+## AI-assisted development disclosure
 
-LightGBM is suitable for structured telemetry and maintenance features, supports nonlinear relationships, and provides efficient probability-based classification.
+Developed by Kamil Soszka with Microsoft Copilot used as the sole AI-assisted development partner for architecture review, PySpark and ML refinement, documentation, validation, and troubleshooting. All environment operations, implementation decisions, testing, and final acceptance were performed by the project owner.
 
-### Why Batch Scoring
+## Skills demonstrated
 
-A daily batch-scoring process matches an operational workflow in which maintenance teams review machine risk at scheduled intervals.
+- Microsoft Fabric Data Engineering
+- Fabric Data Science and MLflow
+- PySpark and Spark SQL
+- Delta Lake and Medallion architecture
+- deterministic synthetic-data engineering
+- leakage-aware feature engineering
+- chronological model evaluation
+- LightGBM and scikit-learn pipelines
+- model-version governance
+- idempotent batch scoring
+- Direct Lake semantic modeling
+- DAX and Power BI
+- native Fabric Git integration
 
-## Limitations
+## Project status
 
-- the project uses synthetic demonstration data
-- model performance does not represent a production industrial deployment
-- streaming inference is not implemented
-- automated maintenance work-order integration is not included
-- per-prediction SHAP explanations are not stored
-- alerting and notification workflows are outside the current scope
-- model-drift monitoring is not implemented
+The current hardening stage is complete for:
 
-## Potential Extensions
-
-Future development can include:
-
-- SHAP-based prediction explanations
-- feature-importance reporting
-- model-drift monitoring
-- data-drift monitoring
-- automated retraining
-- real-time Eventstream ingestion
-- maintenance alerts through Power Automate
-- integration with enterprise asset-management systems
-- deployment pipelines across Development, Test, and Production
-- historical risk-trend reporting
-- cost-sensitive decision thresholds
-
-## Project Status
-
-The following components are complete:
-
-- data generation
-- Medallion data pipeline
+- deterministic data generation
+- Bronze, Silver, and Gold processing
 - feature engineering
-- model training
-- MLflow experiment tracking
-- model registration
-- batch scoring
-- reporting layer
+- chronological model training and evaluation
+- registered-model version governance
+- version-bound threshold management
+- historical batch scoring
+- current reporting snapshot
 - Direct Lake semantic model
-- DAX measures
 - Power BI dashboard
-- GitHub synchronization
-- technical documentation
+- Git synchronization
+- technical validation
 
 ## License
 
