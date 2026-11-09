@@ -27,9 +27,9 @@
                 }
               },
               "queryRef": "gold_machine_features_daily.machine_type",
-              "nativeQueryRef": "Machine type",
+              "nativeQueryRef": "Machine Type",
               "active": true,
-              "displayName": "Machine type"
+              "displayName": "Machine Type"
             }
           ]
         }

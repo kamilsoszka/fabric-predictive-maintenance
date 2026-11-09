@@ -20,13 +20,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold_failure_predictions"
+                      "Entity": "gold_maintenance_risk_current"
                     }
                   },
                   "Property": "risk_level"
                 }
               },
-              "queryRef": "gold_failure_predictions.risk_level",
+              "queryRef": "gold_maintenance_risk_current.risk_level",
               "nativeQueryRef": "risk_level",
               "active": true
             }
@@ -36,17 +36,22 @@
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "gold_failure_predictions"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gold_maintenance_risk_current"
+                        }
+                      },
+                      "Property": "machine_id"
                     }
                   },
-                  "Property": "Total Machines"
+                  "Function": 5
                 }
               },
-              "queryRef": "gold_failure_predictions.Total Machines",
-              "nativeQueryRef": "Total Machines"
+              "queryRef": "CountNonNull(gold_maintenance_risk_current.machine_id)",
+              "nativeQueryRef": "machine_id"
             }
           ]
         }
@@ -55,19 +60,23 @@
         "sort": [
           {
             "field": {
-              "Measure": {
+              "Aggregation": {
                 "Expression": {
-                  "SourceRef": {
-                    "Entity": "gold_failure_predictions"
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "gold_maintenance_risk_current"
+                      }
+                    },
+                    "Property": "machine_id"
                   }
                 },
-                "Property": "Total Machines"
+                "Function": 5
               }
             },
-            "direction": "Descending"
+            "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "objects": {
@@ -154,37 +163,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "28f3b2ddd868394b0548",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold_failure_predictions"
-              }
-            },
-            "Property": "risk_level"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "f78cc77f794aeddb50aa",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold_failure_predictions"
-              }
-            },
-            "Property": "Total Machines"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

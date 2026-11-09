@@ -14,4 +14,5 @@ annotation PBI_ProTooling = ["DirectLakeOnOneLakeInWeb","WebModelingEdit"]
 
 ref table gold_failure_predictions
 ref table gold_machine_features_daily
+ref table gold_maintenance_risk_current
 

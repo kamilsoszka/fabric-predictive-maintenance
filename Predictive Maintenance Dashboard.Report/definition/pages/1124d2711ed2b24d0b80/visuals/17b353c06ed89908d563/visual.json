@@ -20,14 +20,14 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold_failure_predictions"
+                      "Entity": "gold_maintenance_risk_current"
                     }
                   },
-                  "Property": "Predicted Failure Rate"
+                  "Property": "Model Alert Rate"
                 }
               },
-              "queryRef": "gold_failure_predictions.Predicted Failure Rate",
-              "nativeQueryRef": "Predicted Failure Rate",
+              "queryRef": "gold_maintenance_risk_current.Model Alert Rate",
+              "nativeQueryRef": "Model Alert Rate",
               "format": "0.00 %;-0.00 %;0.00 %"
             }
           ]
@@ -40,10 +40,10 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "gold_failure_predictions"
+                    "Entity": "gold_maintenance_risk_current"
                   }
                 },
-                "Property": "Predicted Failure Rate"
+                "Property": "Model Alert Rate"
               }
             },
             "direction": "Descending"
@@ -59,7 +59,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -100,7 +100,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "30D"
+                  "Value": "20D"
                 }
               }
             },
@@ -139,10 +139,17 @@
       "title": [
         {
           "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Model Alert Rate'"
+                }
+              }
+            },
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -153,10 +160,17 @@
                 }
               }
             },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'15'"
+                  "Value": "13D"
                 }
               }
             }
@@ -388,15 +402,15 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "3400ec329855080b7714",
+        "name": "beba51ad09c0b90ba4a8",
         "field": {
           "Measure": {
             "Expression": {
               "SourceRef": {
-                "Entity": "gold_failure_predictions"
+                "Entity": "gold_maintenance_risk_current"
               }
             },
-            "Property": "Predicted Failure Rate"
+            "Property": "Model Alert Rate"
           }
         },
         "type": "Advanced"

@@ -17,17 +17,22 @@
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "gold_failure_predictions"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gold_maintenance_risk_current"
+                        }
+                      },
+                      "Property": "model_alert"
                     }
                   },
-                  "Property": "Predicted Failures"
+                  "Function": 0
                 }
               },
-              "queryRef": "gold_failure_predictions.Predicted Failures",
-              "nativeQueryRef": "Predicted Failures"
+              "queryRef": "Sum(gold_maintenance_risk_current.model_alert)",
+              "nativeQueryRef": "Sum of model_alert"
             }
           ]
         }
@@ -36,13 +41,18 @@
         "sort": [
           {
             "field": {
-              "Measure": {
+              "Aggregation": {
                 "Expression": {
-                  "SourceRef": {
-                    "Entity": "gold_failure_predictions"
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "gold_maintenance_risk_current"
+                      }
+                    },
+                    "Property": "model_alert"
                   }
                 },
-                "Property": "Predicted Failures"
+                "Function": 0
               }
             },
             "direction": "Descending"
@@ -58,7 +68,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -99,7 +109,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "30D"
+                  "Value": "20D"
                 }
               }
             },
@@ -138,10 +148,17 @@
       "title": [
         {
           "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Model Alerts'"
+                }
+              }
+            },
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -152,10 +169,17 @@
                 }
               }
             },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'15'"
+                  "Value": "13D"
                 }
               }
             }
@@ -387,15 +411,20 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "de9a3323171b6ae79ac7",
+        "name": "f81632f931288db571dc",
         "field": {
-          "Measure": {
+          "Aggregation": {
             "Expression": {
-              "SourceRef": {
-                "Entity": "gold_failure_predictions"
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold_maintenance_risk_current"
+                  }
+                },
+                "Property": "model_alert"
               }
             },
-            "Property": "Predicted Failures"
+            "Function": 0
           }
         },
         "type": "Advanced"

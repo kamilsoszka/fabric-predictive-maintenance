@@ -1,0 +1,345 @@
+table gold_maintenance_risk_current
+	lineageTag: 2d20a246-8684-4d73-931e-6d829b771a1c
+	sourceLineageTag: [dbo].[gold_maintenance_risk_current]
+
+	measure 'Model Alert Rate' =
+			
+			DIVIDE(
+			    SUM(gold_maintenance_risk_current[model_alert]),
+			    DISTINCTCOUNT(gold_maintenance_risk_current[machine_id]),
+			    0
+			)
+		lineageTag: 0bb2e65d-f1f3-452c-8ea9-6d378dc4be84
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'High Risk Machines Current' = ```
+			
+			CALCULATE(
+			    DISTINCTCOUNT(
+			        gold_maintenance_risk_current[machine_id]
+			    ),
+			    gold_maintenance_risk_current[risk_level] = "HIGH"
+			        || gold_maintenance_risk_current[risk_level] = "CRITICAL"
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 5ad2b8a1-c1ba-4b4b-a2a1-b3e795d2e4c3
+
+		changedProperty = Name
+
+	measure 'Total Machines Current' =
+			
+			DISTINCTCOUNT(
+			    gold_maintenance_risk_current[machine_id]
+			)
+		formatString: 0
+		lineageTag: 343d020e-94fc-4220-97c5-bb0ee4d9d27c
+
+		changedProperty = Name
+
+	column machine_id
+		dataType: string
+		lineageTag: 07c6d3f6-400b-41db-9c47-af32c479dee7
+		sourceLineageTag: machine_id
+		summarizeBy: none
+		sourceColumn: machine_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column feature_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: cecfacf2-9c3f-49ff-a793-a10a2067b7f7
+		sourceLineageTag: feature_date
+		summarizeBy: none
+		sourceColumn: feature_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column machine_type
+		dataType: string
+		lineageTag: bffec378-ccf8-4bf0-a4d9-30d0a0eb18a7
+		sourceLineageTag: machine_type
+		summarizeBy: none
+		sourceColumn: machine_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column manufacturer
+		dataType: string
+		lineageTag: e20d8cae-31da-4e5b-887f-6dc4ebf5d631
+		sourceLineageTag: manufacturer
+		summarizeBy: none
+		sourceColumn: manufacturer
+
+		annotation SummarizationSetBy = Automatic
+
+	column location
+		dataType: string
+		lineageTag: adcaec4b-cd0f-4b47-80c7-3a5b2a2777fa
+		sourceLineageTag: location
+		summarizeBy: none
+		sourceColumn: location
+
+		annotation SummarizationSetBy = Automatic
+
+	column failure_probability
+		dataType: double
+		lineageTag: 3772aa32-f8c2-4196-9281-308f76214f57
+		sourceLineageTag: failure_probability
+		summarizeBy: none
+		sourceColumn: failure_probability
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column model_alert
+		dataType: int64
+		formatString: 0
+		lineageTag: a2d58dd8-6bfb-475c-9253-6709b2b24350
+		sourceLineageTag: model_alert
+		summarizeBy: none
+		sourceColumn: model_alert
+
+		annotation SummarizationSetBy = Automatic
+
+	column risk_level
+		dataType: string
+		lineageTag: 4acb5137-d8e7-41d3-b78f-e411ca0633fc
+		sourceLineageTag: risk_level
+		summarizeBy: none
+		sourceColumn: risk_level
+
+		annotation SummarizationSetBy = Automatic
+
+	column inspection_priority
+		dataType: int64
+		formatString: 0
+		lineageTag: bf1e7b00-71fc-4712-96b6-6ab8c3e46c32
+		sourceLineageTag: inspection_priority
+		summarizeBy: none
+		sourceColumn: inspection_priority
+
+		annotation SummarizationSetBy = Automatic
+
+	column recommended_action
+		dataType: string
+		lineageTag: 7ae28047-4110-4c35-be80-b0d48ae52c2e
+		sourceLineageTag: recommended_action
+		summarizeBy: none
+		sourceColumn: recommended_action
+
+		annotation SummarizationSetBy = Automatic
+
+	column temperature_avg
+		dataType: double
+		lineageTag: 89a56d50-2ff1-4747-b56b-f4eaa01b287b
+		sourceLineageTag: temperature_avg
+		summarizeBy: none
+		sourceColumn: temperature_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column temperature_max
+		dataType: double
+		lineageTag: 5c7a0a45-3d9f-4168-a7c5-5e3a564816ba
+		sourceLineageTag: temperature_max
+		summarizeBy: none
+		sourceColumn: temperature_max
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vibration_avg
+		dataType: double
+		lineageTag: 095c1b9a-ca2f-4ee3-a280-533e978f7c62
+		sourceLineageTag: vibration_avg
+		summarizeBy: none
+		sourceColumn: vibration_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vibration_max
+		dataType: double
+		lineageTag: 18f873bc-3274-40ad-ab80-67b660bcfddb
+		sourceLineageTag: vibration_max
+		summarizeBy: none
+		sourceColumn: vibration_max
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column pressure_avg
+		dataType: double
+		lineageTag: 90ad1582-845f-403f-b0c8-8f015f70fef4
+		sourceLineageTag: pressure_avg
+		summarizeBy: none
+		sourceColumn: pressure_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column pressure_min
+		dataType: double
+		lineageTag: cd23bf39-a1b0-4d20-aad9-2af9c1963f7e
+		sourceLineageTag: pressure_min
+		summarizeBy: none
+		sourceColumn: pressure_min
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column power_consumption_avg
+		dataType: double
+		lineageTag: e6ab82c0-30d1-4662-9fb5-594cf4e82051
+		sourceLineageTag: power_consumption_avg
+		summarizeBy: none
+		sourceColumn: power_consumption_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column power_consumption_max
+		dataType: double
+		lineageTag: 452f86a0-c42d-4873-a46d-b059d1fa1ff2
+		sourceLineageTag: power_consumption_max
+		summarizeBy: none
+		sourceColumn: power_consumption_max
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column load_avg
+		dataType: double
+		lineageTag: 48b578b7-135f-40d6-acb2-d6c43296d7b5
+		sourceLineageTag: load_avg
+		summarizeBy: none
+		sourceColumn: load_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column load_max
+		dataType: double
+		lineageTag: 3c76ab55-1543-4e50-acae-f6d93d456b8f
+		sourceLineageTag: load_max
+		summarizeBy: none
+		sourceColumn: load_max
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column days_since_last_maintenance
+		dataType: int64
+		formatString: 0
+		lineageTag: ccc25234-060d-4abf-9325-7ee37fb29c2d
+		sourceLineageTag: days_since_last_maintenance
+		summarizeBy: none
+		sourceColumn: days_since_last_maintenance
+
+		annotation SummarizationSetBy = Automatic
+
+	column maintenance_count_30d
+		dataType: int64
+		formatString: 0
+		lineageTag: 330175bf-7617-4a65-8af9-bf2ea5ab796a
+		sourceLineageTag: maintenance_count_30d
+		summarizeBy: none
+		sourceColumn: maintenance_count_30d
+
+		annotation SummarizationSetBy = Automatic
+
+	column maintenance_duration_hours_30d
+		dataType: double
+		lineageTag: 8ddb5070-fda7-49ae-9bd7-53ab044da01d
+		sourceLineageTag: maintenance_duration_hours_30d
+		summarizeBy: none
+		sourceColumn: maintenance_duration_hours_30d
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column maintenance_cost_30d
+		dataType: double
+		lineageTag: a3cec1b9-1d13-4ff2-8985-4cf216c68adc
+		sourceLineageTag: maintenance_cost_30d
+		summarizeBy: none
+		sourceColumn: maintenance_cost_30d
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column model_name
+		dataType: string
+		lineageTag: 096b4418-2c99-4e2f-a5fa-be39b97290c8
+		sourceLineageTag: model_name
+		summarizeBy: none
+		sourceColumn: model_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column model_version
+		dataType: string
+		lineageTag: ecc64d7a-5789-4d32-8b96-1467a1a3705a
+		sourceLineageTag: model_version
+		summarizeBy: none
+		sourceColumn: model_version
+
+		annotation SummarizationSetBy = Automatic
+
+	column deployment_status
+		dataType: string
+		lineageTag: 823ade9b-ddf4-49f0-98fc-5554c6b8a601
+		sourceLineageTag: deployment_status
+		summarizeBy: none
+		sourceColumn: deployment_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column decision_threshold
+		dataType: double
+		lineageTag: d5b74bce-f08c-4237-b672-16eaf5b42ff2
+		sourceLineageTag: decision_threshold
+		summarizeBy: none
+		sourceColumn: decision_threshold
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column prediction_timestamp_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1cabf49b-5639-40a9-add2-a027390f1d44
+		sourceLineageTag: prediction_timestamp_utc
+		summarizeBy: none
+		sourceColumn: prediction_timestamp_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gold_maintenance_risk_current = entity
+		mode: directLake
+		source
+			entityName: gold_maintenance_risk_current
+			schemaName: dbo
+			expressionSource: 'DirectLake - lh_predictive_maintenance'
+

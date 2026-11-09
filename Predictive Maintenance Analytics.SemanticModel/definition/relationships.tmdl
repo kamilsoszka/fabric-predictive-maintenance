@@ -3,3 +3,7 @@ relationship c27233f1-6d21-529d-195f-c2789281805e
 	fromColumn: gold_machine_features_daily.machine_id
 	toColumn: gold_failure_predictions.machine_id
 
+relationship af4c6b44-6200-3754-1eb9-157ff923a2be
+	fromColumn: gold_machine_features_daily.machine_id
+	toColumn: gold_maintenance_risk_current.machine_id
+

@@ -20,14 +20,14 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold_failure_predictions"
+                      "Entity": "gold_maintenance_risk_current"
                     }
                   },
-                  "Property": "Total Machines"
+                  "Property": "Total Machines Current"
                 }
               },
-              "queryRef": "gold_failure_predictions.Total Machines",
-              "nativeQueryRef": "Total Machines"
+              "queryRef": "gold_maintenance_risk_current.Total Machines Current",
+              "nativeQueryRef": "Total Machines Current"
             }
           ]
         }
@@ -39,10 +39,10 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "gold_failure_predictions"
+                    "Entity": "gold_maintenance_risk_current"
                   }
                 },
-                "Property": "Total Machines"
+                "Property": "Total Machines Current"
               }
             },
             "direction": "Descending"
@@ -58,7 +58,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -99,7 +99,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "30D"
+                  "Value": "20D"
                 }
               }
             },
@@ -138,10 +138,17 @@
       "title": [
         {
           "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Total Machines'"
+                }
+              }
+            },
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -152,10 +159,17 @@
                 }
               }
             },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'15'"
+                  "Value": "13D"
                 }
               }
             }
@@ -387,15 +401,15 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "4088670a3bceee655a08",
+        "name": "3e23fb3260c37b5774d8",
         "field": {
           "Measure": {
             "Expression": {
               "SourceRef": {
-                "Entity": "gold_failure_predictions"
+                "Entity": "gold_maintenance_risk_current"
               }
             },
-            "Property": "Total Machines"
+            "Property": "Total Machines Current"
           }
         },
         "type": "Advanced"

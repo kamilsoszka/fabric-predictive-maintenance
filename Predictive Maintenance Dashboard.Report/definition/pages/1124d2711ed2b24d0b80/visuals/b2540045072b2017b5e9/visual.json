@@ -20,13 +20,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold_failure_predictions"
+                      "Entity": "gold_maintenance_risk_current"
                     }
                   },
                   "Property": "machine_id"
                 }
               },
-              "queryRef": "gold_failure_predictions.machine_id",
+              "queryRef": "gold_maintenance_risk_current.machine_id",
               "nativeQueryRef": "Machine ID",
               "displayName": "Machine ID"
             },
@@ -35,15 +35,15 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold_failure_predictions"
+                      "Entity": "gold_maintenance_risk_current"
                     }
                   },
                   "Property": "failure_probability"
                 }
               },
-              "queryRef": "gold_failure_predictions.failure_probability",
-              "nativeQueryRef": "Failure probability",
-              "displayName": "Failure probability",
+              "queryRef": "Sum(gold_maintenance_risk_current.failure_probability)",
+              "nativeQueryRef": "Failure Probability",
+              "displayName": "Failure Probability",
               "format": "0.00 %;-0.00 %;0.00 %"
             },
             {
@@ -51,31 +51,30 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold_failure_predictions"
+                      "Entity": "gold_maintenance_risk_current"
                     }
                   },
                   "Property": "risk_level"
                 }
               },
-              "queryRef": "gold_failure_predictions.risk_level",
-              "nativeQueryRef": "Risk level",
-              "displayName": "Risk level"
+              "queryRef": "gold_maintenance_risk_current.risk_level",
+              "nativeQueryRef": "Risk Level",
+              "displayName": "Risk Level"
             },
             {
               "field": {
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold_failure_predictions"
+                      "Entity": "gold_maintenance_risk_current"
                     }
                   },
-                  "Property": "predicted_failure_7d"
+                  "Property": "model_alert"
                 }
               },
-              "queryRef": "gold_failure_predictions.predicted_failure_7d",
-              "nativeQueryRef": "Predicted failure 7d",
-              "displayName": "Predicted failure 7d",
-              "format": "0 %;-0 %;0 %"
+              "queryRef": "gold_maintenance_risk_current.model_alert",
+              "nativeQueryRef": "Model Alert",
+              "displayName": "Model Alert"
             }
           ]
         }
@@ -87,10 +86,10 @@
               "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "gold_failure_predictions"
+                    "Entity": "gold_maintenance_risk_current"
                   }
                 },
-                "Property": "failure_probability"
+                "Property": "model_alert"
               }
             },
             "direction": "Descending"
@@ -139,55 +138,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "81D"
+                  "Value": "99.57473334256822D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "gold_failure_predictions.machine_id"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "122D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "gold_failure_predictions.failure_probability"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "66D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "gold_failure_predictions.risk_level"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "108.74985192705785D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "gold_failure_predictions.predicted_failure_7d"
+            "metadata": "Sum(gold_maintenance_risk_current.failure_probability)"
           }
         }
       ]
@@ -212,12 +169,12 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "0aeeb55d7d130300adca",
+        "name": "8bfb06dd1cd781418447",
         "field": {
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "gold_failure_predictions"
+                "Entity": "gold_maintenance_risk_current"
               }
             },
             "Property": "machine_id"
@@ -226,26 +183,12 @@
         "type": "Categorical"
       },
       {
-        "name": "837c45c69aa7bb25dd12",
+        "name": "b0cb7982b572d1ea8991",
         "field": {
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "gold_failure_predictions"
-              }
-            },
-            "Property": "failure_probability"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "be5edc101447e1b47057",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold_failure_predictions"
+                "Entity": "gold_maintenance_risk_current"
               }
             },
             "Property": "risk_level"
@@ -254,15 +197,29 @@
         "type": "Categorical"
       },
       {
-        "name": "b5dd0691a0a240534d20",
+        "name": "2b13b20e7819d0954700",
         "field": {
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "gold_failure_predictions"
+                "Entity": "gold_maintenance_risk_current"
               }
             },
-            "Property": "predicted_failure_7d"
+            "Property": "model_alert"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "1d2a0d6a62d5d29ee303",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold_maintenance_risk_current"
+              }
+            },
+            "Property": "failure_probability"
           }
         },
         "type": "Advanced"
