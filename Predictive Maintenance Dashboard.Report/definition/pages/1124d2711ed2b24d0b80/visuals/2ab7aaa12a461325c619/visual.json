@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "2ab7aaa12a461325c619",
   "position": {
-    "x": 1070.7982985588565,
-    "y": 24.551803878192661,
+    "x": 1054.0,
+    "y": 12.0,
     "z": 7000,
-    "height": 100.35404948410918,
-    "width": 190,
-    "tabOrder": 7000
+    "height": 144.0,
+    "width": 210.0,
+    "tabOrder": 6
   },
   "visual": {
     "visualType": "card",
@@ -62,27 +62,6 @@
                   "Value": "false"
                 }
               }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10D"
-                }
-              }
-            },
-            "bold": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "italic": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
             }
           }
         }
@@ -100,7 +79,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "28D"
                 }
               }
             },
@@ -139,6 +118,13 @@
       "title": [
         {
           "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Average Failure Risk'"
+                }
+              }
+            },
             "show": {
               "expr": {
                 "Literal": {
@@ -163,14 +149,14 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "13D"
+                  "Value": "'14'"
                 }
               }
             },
-            "text": {
+            "bold": {
               "expr": {
                 "Literal": {
-                  "Value": "'Average Failure Probability'"
+                  "Value": "true"
                 }
               }
             }
@@ -264,28 +250,28 @@
             "top": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             },
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             },
             "left": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             }
@@ -307,7 +293,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#E0E0E0'"
+                      "Value": "'#D9D9E3'"
                     }
                   }
                 }
@@ -316,7 +302,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "4D"
+                  "Value": "6D"
                 }
               }
             },
@@ -336,60 +322,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "preset": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Custom'"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#A6ADC6'"
-                    }
-                  }
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "85D"
-                }
-              }
-            },
-            "shadowSpread": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "shadowBlur": {
-              "expr": {
-                "Literal": {
-                  "Value": "5D"
-                }
-              }
-            },
-            "angle": {
-              "expr": {
-                "Literal": {
-                  "Value": "90D"
-                }
-              }
-            },
-            "shadowDistance": {
-              "expr": {
-                "Literal": {
-                  "Value": "4D"
+                  "Value": "false"
                 }
               }
             }

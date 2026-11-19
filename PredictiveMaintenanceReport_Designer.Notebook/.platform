@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "PredictiveMaintenanceReport_Designer"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "6fbed514-829a-854a-46b2-9d29e0913942"
+  }
+}

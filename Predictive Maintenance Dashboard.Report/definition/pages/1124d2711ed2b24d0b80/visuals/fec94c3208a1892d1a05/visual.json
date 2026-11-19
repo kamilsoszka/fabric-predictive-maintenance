@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "fec94c3208a1892d1a05",
   "position": {
-    "x": 422.11004155044128,
-    "y": 24.551803878192661,
+    "x": 424.0,
+    "y": 12.0,
     "z": 1000,
-    "height": 100,
-    "width": 190,
-    "tabOrder": 1000
+    "height": 144.0,
+    "width": 198.0,
+    "tabOrder": 3
   },
   "visual": {
     "visualType": "card",
@@ -71,27 +71,6 @@
                   "Value": "false"
                 }
               }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10D"
-                }
-              }
-            },
-            "bold": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "italic": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
             }
           }
         }
@@ -109,7 +88,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "28D"
                 }
               }
             },
@@ -151,7 +130,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Model Alerts'"
+                  "Value": "'Active Alerts'"
                 }
               }
             },
@@ -179,7 +158,14 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "13D"
+                  "Value": "'14'"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -273,28 +259,28 @@
             "top": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             },
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             },
             "left": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             }
@@ -316,7 +302,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#E0E0E0'"
+                      "Value": "'#D9D9E3'"
                     }
                   }
                 }
@@ -325,7 +311,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "4D"
+                  "Value": "6D"
                 }
               }
             },
@@ -345,60 +331,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "preset": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Custom'"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#A6ADC6'"
-                    }
-                  }
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "85D"
-                }
-              }
-            },
-            "shadowSpread": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "shadowBlur": {
-              "expr": {
-                "Literal": {
-                  "Value": "5D"
-                }
-              }
-            },
-            "angle": {
-              "expr": {
-                "Literal": {
-                  "Value": "90D"
-                }
-              }
-            },
-            "shadowDistance": {
-              "expr": {
-                "Literal": {
-                  "Value": "4D"
+                  "Value": "false"
                 }
               }
             }

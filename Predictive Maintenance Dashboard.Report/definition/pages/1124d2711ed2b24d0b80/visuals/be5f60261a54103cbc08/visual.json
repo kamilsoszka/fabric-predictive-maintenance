@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "be5f60261a54103cbc08",
   "position": {
-    "x": 638.33946055324634,
-    "y": 24.551803878192661,
+    "x": 634.0,
+    "y": 12.0,
     "z": 2000,
-    "height": 100,
-    "width": 190,
-    "tabOrder": 2000
+    "height": 144.0,
+    "width": 198.0,
+    "tabOrder": 4
   },
   "visual": {
     "visualType": "card",
@@ -61,27 +61,6 @@
                   "Value": "false"
                 }
               }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10D"
-                }
-              }
-            },
-            "bold": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "italic": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
             }
           }
         }
@@ -99,7 +78,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "28D"
                 }
               }
             },
@@ -141,7 +120,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'High Risk Machines'"
+                  "Value": "'High-Risk Machines'"
                 }
               }
             },
@@ -169,7 +148,14 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "13D"
+                  "Value": "'14'"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -263,28 +249,28 @@
             "top": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             },
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             },
             "left": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "8D"
                 }
               }
             }
@@ -306,7 +292,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#E0E0E0'"
+                      "Value": "'#D9D9E3'"
                     }
                   }
                 }
@@ -315,7 +301,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "4D"
+                  "Value": "6D"
                 }
               }
             },
@@ -335,60 +321,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "preset": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Custom'"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#A6ADC6'"
-                    }
-                  }
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "85D"
-                }
-              }
-            },
-            "shadowSpread": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "shadowBlur": {
-              "expr": {
-                "Literal": {
-                  "Value": "5D"
-                }
-              }
-            },
-            "angle": {
-              "expr": {
-                "Literal": {
-                  "Value": "90D"
-                }
-              }
-            },
-            "shadowDistance": {
-              "expr": {
-                "Literal": {
-                  "Value": "4D"
+                  "Value": "false"
                 }
               }
             }
