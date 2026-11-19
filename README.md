@@ -1,6 +1,8 @@
 # Microsoft Fabric Predictive Maintenance Platform
 
-A Microsoft Fabric portfolio project demonstrating an end-to-end predictive-maintenance workflow with deterministic synthetic data, a Medallion architecture, PySpark feature engineering, MLflow model management, LightGBM batch scoring, Direct Lake, DAX, and Power BI.
+An end-to-end predictive-maintenance platform built with Microsoft Fabric, combining deterministic synthetic telemetry, a Bronze-Silver-Gold Lakehouse architecture, leakage-aware PySpark feature engineering, MLflow model governance, LightGBM batch scoring, Direct Lake, DAX, Power BI, and PBIR report automation through the Microsoft Fabric REST API.
+
+![Predictive Maintenance Analytics dashboard](docs/images/predictive-maintenance-dashboard.png)
 
 > [!NOTE]
 > This project uses synthetic demonstration data. Failure-linked degradation profiles are intentionally injected into telemetry to create a controlled machine-learning scenario. Model results do not represent validated performance on production industrial equipment.
@@ -15,6 +17,23 @@ The platform estimates whether each machine is at risk of failure within the nex
 - preventive inspection prioritization
 - comparisons by location and machine type
 - telemetry and maintenance context for investigation
+
+## What makes this project notable
+
+This implementation covers the complete analytics and machine-learning lifecycle rather than only model training:
+
+1. deterministic synthetic-data generation
+2. validated Medallion processing
+3. leakage-aware feature engineering
+4. chronological model evaluation
+5. registered-model version governance
+6. version-bound threshold management
+7. idempotent prediction history
+8. Direct Lake semantic modeling
+9. Power BI operational reporting
+10. PBIR report-definition automation
+11. validation-driven deployment through Fabric REST APIs
+12. native Fabric Git integration with GitHub
 
 ## Architecture
 
@@ -32,12 +51,13 @@ flowchart LR
     J --> K[Current risk snapshot]
     K --> L[Direct Lake semantic model]
     L --> M[Power BI dashboard]
+    M --> N[PBIR inspection and REST API deployment]
 ```
 
 ## Technology stack
 
 | Area | Technology |
-| --- | --- |
+|---|---|
 | Unified analytics platform | Microsoft Fabric |
 | Storage | OneLake and Fabric Lakehouse |
 | Processing | PySpark and Spark SQL |
@@ -49,12 +69,13 @@ flowchart LR
 | Semantic model | Direct Lake |
 | Business logic | DAX |
 | Reporting | Power BI |
+| Report engineering | PBIR JSON, Fabric REST API, Python notebook |
 | Version control | Native Fabric Git integration with GitHub |
 
 ## Fabric items
 
 | Item | Type | Purpose |
-| --- | --- | --- |
+|---|---|---|
 | `00_generate_demo_data_fabric` | Notebook | Generates deterministic synthetic Bronze data. |
 | `01_silver_transformation_fabric` | Notebook | Standardizes and validates Bronze data. |
 | `02_feature_engineering_fabric` | Notebook | Creates leakage-aware daily Gold features. |
@@ -62,10 +83,11 @@ flowchart LR
 | `03_model_training_fabric` | Experiment | Stores the current MLflow training run. |
 | `04_batch_scoring_fabric` | Notebook | Loads the approved model and writes prediction history. |
 | `05_reporting_layer_fabric` | Notebook | Builds the current reporting snapshot. |
+| `PredictiveMaintenanceReport_Designer` | Notebook | Retrieves, validates, modifies, and deploys the PBIR report definition. |
 | `lh_predictive_maintenance` | Lakehouse | Stores Bronze, Silver, Gold, history, and snapshot tables. |
 | `predictive_maintenance_lightgbm` | ML Model | Stores registered LightGBM model versions. |
-| `Predictive Maintenance Analytics` | Semantic model | Direct Lake model and DAX measures. |
-| `Predictive Maintenance Dashboard` | Report | Interactive operational dashboard. |
+| `Predictive Maintenance Analytics` | Semantic model | Provides the Direct Lake model and DAX measures. |
+| `Predictive Maintenance Dashboard` | Report | Presents operational KPIs, filters, machine details, and risk distribution. |
 
 Legacy notebooks without the `_fabric` suffix were removed from the current workspace after the hardened pipeline was validated. Earlier versions remain recoverable through Git history and the Fabric Recycle bin.
 
@@ -80,6 +102,7 @@ fabric-predictive-maintenance/
 ├── 03_model_training_fabric.MLExperiment/
 ├── 04_batch_scoring_fabric.Notebook/
 ├── 05_reporting_layer_fabric.Notebook/
+├── PredictiveMaintenanceReport_Designer.Notebook/
 ├── lh_predictive_maintenance.Lakehouse/
 ├── predictive_maintenance_lightgbm.MLModel/
 ├── Predictive Maintenance Analytics.SemanticModel/
@@ -90,6 +113,8 @@ fabric-predictive-maintenance/
 ├── LICENSE
 └── README.md
 ```
+
+> If `PredictiveMaintenanceReport_Designer.Notebook/` has not yet been synchronized through Fabric Git, remove that line until the notebook is committed.
 
 Fabric-generated artifact definitions are changed in Microsoft Fabric and committed through native Fabric Git integration. They are not edited manually in GitHub.
 
@@ -103,12 +128,10 @@ Fabric-generated artifact definitions are changed in Microsoft Fabric and commit
 2026-11-06 14:00:00 UTC
 ```
 
-Repeated runs therefore produce the same logical date range and identifiers rather than shifting with `datetime.now()` or `current_date()`.
+Repeated runs produce the same logical date range and identifiers rather than shifting with `datetime.now()` or `current_date()`.
 
-Validated Bronze tables:
-
-| Table | Rows |
-| --- | ---: |
+| Bronze table | Rows |
+|---|---:|
 | `bronze_machine_master` | 100 |
 | `bronze_failure_events` | 150 |
 | `bronze_maintenance_events` | 300 |
@@ -130,10 +153,8 @@ Telemetry contains 180 days of 15-minute observations for 100 machines. The gene
 - orphan checks for failure, maintenance, and telemetry records
 - technical range validation for all sensor values
 
-Validated Silver tables preserve the Bronze row counts:
-
-| Table | Rows |
-| --- | ---: |
+| Silver table | Rows |
+|---|---:|
 | `silver_machine_master` | 100 |
 | `silver_failure_events` | 150 |
 | `silver_maintenance_events` | 300 |
@@ -141,7 +162,7 @@ Validated Silver tables preserve the Bronze row counts:
 
 ### 3. Gold feature engineering
 
-`02_feature_engineering_fabric` produces one record per machine and complete day. It reports and excludes incomplete machine-days rather than silently treating them as complete.
+`02_feature_engineering_fabric` produces one record per machine and complete day. Incomplete machine-days are reported and excluded rather than silently treated as complete.
 
 The feature set includes:
 
@@ -154,26 +175,24 @@ The feature set includes:
 - machine attributes and machine age
 - seven-day future-failure target
 
-The final table is:
+The final feature table is:
 
 ```text
 gold_machine_features_daily
 ```
 
-Validated output:
-
 | Metric | Result |
-| --- | ---: |
+|---|---:|
 | Machine-day rows | 17,900 |
 | Machines | 100 |
 | Positive target rows | 1,044 |
 | Positive rate | 5.83% |
 
-The notebook verifies that known leakage columns such as failure dates, failure IDs, helper degradation signals, and future-event fields are absent from model inputs.
+The notebook verifies that known leakage columns, including failure dates, failure IDs, helper degradation signals, and future-event fields, are absent from model inputs.
 
 ## Model training and evaluation
 
-`03_model_training_fabric` uses a chronological split rather than a random row split:
+`03_model_training_fabric` uses a chronological split:
 
 - training: earliest 70% of feature dates
 - validation: next 15%
@@ -195,25 +214,25 @@ Reported metrics include:
 
 ### Threshold policy
 
-The decision threshold is selected on the validation set using an explicit policy:
+The decision threshold is selected on the validation set using:
 
 ```text
 maximize validation F1 subject to precision >= 0.25
 ```
 
-The selected threshold is stored as a tag on the exact registered model version. The test set is then used once for final evaluation and is not used for further threshold tuning.
+The selected threshold is stored as a tag on the exact registered model version. The test set is then used once for final evaluation.
 
 ### Approved model version
 
-Microsoft Fabric returned HTTP `404` for MLflow registered-model aliases. The project therefore uses a Fabric-compatible model-version tag:
+Microsoft Fabric returned HTTP `404` for MLflow registered-model aliases in the tested environment. The project therefore uses the model-version tag:
 
 ```text
 deployment_status = champion
 ```
 
-The scoring notebook selects the registered version carrying this tag and reads the `decision_threshold` tag from the same version. This prevents model-version and threshold mismatches.
+The scoring notebook selects the version carrying this tag and reads `decision_threshold` from the same version, preventing model-version and threshold mismatches.
 
-The registered model is:
+Registered model:
 
 ```text
 predictive_maintenance_lightgbm
@@ -223,16 +242,14 @@ predictive_maintenance_lightgbm
 
 `04_batch_scoring_fabric`:
 
-- loads the registered version tagged `deployment_status = champion`
+- loads the version tagged `deployment_status = champion`
 - reads the version-bound decision threshold
-- validates that required model features exist
+- validates required model features
 - checks feature freshness
 - scores the latest feature date for all 100 machines
 - stores probability and binary alert separately
 - assigns operational risk levels
 - records model name, version, deployment status, threshold, and UTC scoring timestamp
-
-### Prediction history
 
 Predictions are retained in:
 
@@ -240,12 +257,10 @@ Predictions are retained in:
 gold_failure_predictions_history
 ```
 
-The notebook uses an idempotent Delta `MERGE` key comprising machine, feature date, model version, and threshold. Repeating the same scoring configuration updates the same logical records instead of discarding all history.
-
-Primary output fields:
+The notebook uses an idempotent Delta `MERGE` key comprising machine, feature date, model version, and threshold.
 
 | Column | Description |
-| --- | --- |
+|---|---|
 | `machine_id` | Unique machine identifier. |
 | `feature_date` | Date represented by the scored features. |
 | `failure_probability` | Continuous seven-day failure probability. |
@@ -259,7 +274,7 @@ Primary output fields:
 
 ## Reporting layer
 
-`05_reporting_layer_fabric` builds the current snapshot:
+`05_reporting_layer_fabric` builds:
 
 ```text
 gold_maintenance_risk_current
@@ -267,35 +282,33 @@ gold_maintenance_risk_current
 
 The snapshot combines current predictions, machine attributes, telemetry features, maintenance features, model metadata, inspection priority, and recommended action.
 
-The reporting contract intentionally separates:
+The reporting contract separates:
 
 - `failure_probability`, a continuous model output
 - `risk_level`, an operational probability band
 - `model_alert`, a stricter binary decision
 
-A machine can therefore be `HIGH` risk while `model_alert = 0`. The Power BI report presents these as different concepts.
+A machine can therefore be `HIGH` risk while `model_alert = 0`.
 
 ## Risk classification
 
 | Risk level | Probability range | Interpretation |
-| --- | ---: | --- |
+|---|---:|---|
 | `LOW` | below 20% | Continue standard monitoring. |
 | `MEDIUM` | 20% to below 40% | Review within seven days. |
 | `HIGH` | 40% to below 70% | Inspect within 72 hours. |
 | `CRITICAL` | 70% or above | Inspect within 24 hours. |
 
-The binary alert threshold is not hardcoded in the reporting layer. It is loaded from the approved model version during scoring.
+The binary alert threshold is loaded from the approved model version during scoring and is not hardcoded in the reporting layer.
 
 ## Current validated scoring results
 
-The final full run of notebooks `00–05` produced:
-
 | Metric | Result |
-| --- | ---: |
-| Total machines | 100 |
-| Model alerts | 0 |
-| Model alert rate | 0.00% |
-| Average failure probability | 12.50% |
+|---|---:|
+| Machines monitored | 100 |
+| Active alerts | 0 |
+| Alert rate | 0.00% |
+| Average failure risk | 12.50% |
 | Low-risk machines | 33 |
 | Medium-risk machines | 57 |
 | High-risk machines | 10 |
@@ -366,19 +379,125 @@ Predictive Maintenance Dashboard.Report
 
 ![Predictive Maintenance Dashboard](docs/images/predictive-maintenance-dashboard.png)
 
-The dashboard includes:
+The redesigned dashboard includes:
 
-- total machines
-- model alerts
-- high- or critical-risk machines
-- model alert rate
-- average failure probability
-- machine distribution by risk level
-- location slicer
-- machine-type slicer
-- machine-level probability, risk, and alert table
+- `Machines Monitored`
+- `Active Alerts`
+- `High-Risk Machines`
+- `Alert Rate`
+- `Average Failure Risk`
+- `Location` dropdown slicer
+- `Machine Type` dropdown slicer
+- `Machine Risk Details` table
+- `Machines by Risk Level` horizontal bar chart
 
-Both slicers were validated against all KPI cards, the risk chart, and the machine table.
+The layout was aligned to a common grid while preserving all report fields, visual-level filters, semantic-model measures, and validated values.
+
+## PBIR report automation
+
+A dedicated Microsoft Fabric notebook was used to inspect and redesign the Power BI report through the Microsoft Fabric REST API.
+
+```text
+Predictive Maintenance Dashboard
+        |
+        v
+Get Report Definition
+        |
+        v
+Decode InlineBase64 PBIR parts
+        |
+        v
+Inspect visual.json definitions
+        |
+        v
+Validate visual IDs, fields, filters, and positions
+        |
+        v
+Create modified in-memory definition
+        |
+        v
+Validate expected visual changes
+        |
+        v
+Update Report Definition
+        |
+        v
+Poll the Fabric long-running operation
+        |
+        v
+Verify the saved report definition
+```
+
+### Fabric REST API operations
+
+```text
+POST /v1/workspaces/{workspaceId}/reports/{reportId}/getDefinition
+POST /v1/workspaces/{workspaceId}/reports/{reportId}/updateDefinition
+GET  /v1/operations/{operationId}
+GET  /v1/operations/{operationId}/result
+```
+
+Authentication uses the notebook identity without hardcoded credentials:
+
+```python
+notebookutils.credentials.getToken("pbi")
+```
+
+The report automation notebook does not require a default Lakehouse because it operates on the report definition rather than Lakehouse data.
+
+### Automated report improvements
+
+The notebook:
+
+- inventoried all report pages and visuals
+- captured visual IDs, types, fields, filters, positions, and tab order
+- standardized business-facing KPI names
+- increased KPI value font size to 28
+- configured `Location` and `Machine Type` as dropdown slicers
+- converted risk distribution to a horizontal clustered bar chart
+- resized the machine-detail table and risk chart
+- applied consistent titles, borders, padding, and alignment
+- changed only expected `visual.json` definitions
+- preserved fields, filters, and the semantic model
+
+### Deployment safeguards
+
+Before each update, the notebook:
+
+- verified the expected visual IDs
+- verified changed definition paths
+- checked slicer mode after modification
+- checked KPI font size after modification
+- preserved filter configurations
+- preserved report fields
+- prepared an in-memory rollback request body
+- polled the Fabric operation until completion
+
+Example validation output:
+
+```text
+FILTER AND KPI FIX VALIDATION PASSED
+Slicer dropdowns configured: 2
+KPI value font size: 28
+Fields changed: No
+Filters changed: No
+Semantic model changed: No
+Rollback stored: rollback_request_body
+```
+
+## Why the report automation matters
+
+This project demonstrates that a Power BI report can be treated as a structured engineering artifact rather than only a manually edited presentation layer.
+
+PBIR definitions make it possible to:
+
+- inspect visual configuration programmatically
+- apply exact coordinates and dimensions
+- standardize business terminology
+- preserve filters during layout changes
+- validate the intended scope before deployment
+- reject unexpected definition changes
+- prepare rollback payloads before updating the report
 
 ## End-to-end validation
 
@@ -398,6 +517,7 @@ The final hardening run confirmed:
 - current reporting snapshot created
 - model alert and risk level separated
 - Direct Lake report KPIs and slicers validated
+- PBIR report-definition updates validated
 - native Fabric-to-Git synchronization completed with zero pending changes
 
 ## Reproducing the project
@@ -406,12 +526,11 @@ The final hardening run confirmed:
 
 - Microsoft Fabric workspace on supported capacity or an active trial
 - permission to create and run Fabric notebooks, Lakehouse, Data Science, semantic-model, and report items
+- read and write permission for the Power BI report
 - Fabric Git integration with GitHub
 - PySpark, LightGBM, scikit-learn, pandas, NumPy, Delta Lake, and MLflow available in the Fabric runtime
 
 ### Execution order
-
-Run the notebooks in this exact order:
 
 ```text
 00_generate_demo_data_fabric
@@ -427,8 +546,9 @@ After execution:
 1. Confirm the model version has `deployment_status = champion` and a `decision_threshold` tag.
 2. Confirm `gold_failure_predictions_history` contains the current model version.
 3. Confirm `gold_maintenance_risk_current` contains one current record per machine.
-4. Refresh the Direct Lake semantic model or report visuals if needed.
+4. Refresh the Direct Lake semantic model or report visuals if required.
 5. Validate KPI values, risk distribution, table values, and both slicers.
+6. Run `PredictiveMaintenanceReport_Designer` to inspect or deploy validated PBIR changes.
 
 ## Security and operational considerations
 
@@ -437,7 +557,8 @@ After execution:
 - Workspace identities, permissions, capacity, and regional settings must be validated separately after restore.
 - The scoring notebook rejects stale features beyond its configured tolerance.
 - Production deployment should use a controlled model-approval process rather than relying solely on a text tag.
-- The current project demonstrates batch inference, not real-time safety monitoring.
+- The current implementation demonstrates batch inference, not real-time safety monitoring.
+- Report-definition scripts must validate visual IDs and PBIR schema structures before reuse with another report.
 
 ## Known limitations
 
@@ -451,6 +572,8 @@ After execution:
 - SHAP explanations are not persisted for individual predictions.
 - Drift monitoring and automated retraining are not implemented.
 - Prediction-outcome reconciliation requires future observed failure data.
+- PBIR visual properties can change between schema versions.
+- The in-memory rollback payload remains available only during the active notebook session unless explicitly persisted.
 
 ## Potential extensions
 
@@ -468,7 +591,7 @@ After execution:
 
 ## AI-assisted development disclosure
 
-Developed by Kamil Soszka with Microsoft Copilot used as the sole AI-assisted development partner for architecture review, PySpark and ML refinement, documentation, validation, and troubleshooting. All environment operations, implementation decisions, testing, and final acceptance were performed by the project owner.
+Developed by Kamil Soszka with Microsoft Copilot used as the sole AI-assisted development partner for architecture review, PySpark and ML refinement, PBIR report automation, documentation, validation, and troubleshooting. All environment operations, implementation decisions, testing, and final acceptance were performed by the project owner.
 
 ## Skills demonstrated
 
@@ -484,6 +607,11 @@ Developed by Kamil Soszka with Microsoft Copilot used as the sole AI-assisted de
 - idempotent batch scoring
 - Direct Lake semantic modeling
 - DAX and Power BI
+- Power BI Project format and PBIR JSON
+- Microsoft Fabric REST API
+- Python report-definition automation
+- validation-driven deployment
+- rollback preparation
 - native Fabric Git integration
 
 ## Project status
@@ -499,7 +627,8 @@ The current hardening stage is complete for:
 - historical batch scoring
 - current reporting snapshot
 - Direct Lake semantic model
-- Power BI dashboard
+- Power BI dashboard redesign
+- PBIR report automation
 - Git synchronization
 - technical validation
 
